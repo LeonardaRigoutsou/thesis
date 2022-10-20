@@ -31,7 +31,8 @@ CREATE TABLE IF NOT EXISTS users (
 	password varchar (100) NOT NULL,
 	first_name varchar (20) NOT NULL,
 	last_name varchar (20) NOT NULL,
-	hire_date date NOT NULL
+	hire_date date NOT NULL,
+	role varchar(20) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS orders (
