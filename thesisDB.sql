@@ -24,6 +24,15 @@ CREATE TABLE IF NOT EXISTS tables (
 	location_y INT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS reservations (
+	reservation_id INT NOT NULL,
+	PRIMARY KEY (reservation_id),
+	reservation_name varchar (20) NOT NULL,
+	reservation_date date NOT NULL,
+	table_num INT NOT NULL,
+	FOREIGN KEY (table_num) REFERENCES tables (table_num)
+);
+
 CREATE TABLE IF NOT EXISTS users (
 	user_id INT NOT NULL, 
 	PRIMARY KEY (user_id),
