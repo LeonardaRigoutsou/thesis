@@ -77,26 +77,6 @@ const Item = sequelize.define('items', {
 }, { "timestamps": false });
 
 const OrderItem = sequelize.define('orderitems', {
-    // orderId: {
-    //     type: Sequelize.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //         model: Order,
-    //         key: 'orderId'
-    //     },
-    //     primaryKey: true,
-    //     unique: true
-    // },
-    // itemId: {
-    //     type: Sequelize.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //         model: Item,
-    //         key: 'itemId'
-    //     },
-    //     primaryKey: true,
-    //     unique: true
-    // },
     status: {
         type: Sequelize.STRING,
         allowNull: false
@@ -210,6 +190,12 @@ Item.belongsTo(Category, {
 });
 
 
-
+exports.Category = Category;
+exports.Order = Order;
+exports.Item = Item;
+exports.OrderItem = OrderItem;
+exports.Table = Table;
+exports.User = User;
+exports.Reservation = Reservation;
 
 exports.sequelize = sequelize;
