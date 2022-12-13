@@ -12,7 +12,7 @@ const login = (req, res, next) => {
         return res.status(400).json({ message: 'Username does not exist.' });
     }
 
-    2if (!password) {
+    if (!password) {
         return res.status(400).json({ message: 'Password does not exist.' });
     }
 
@@ -21,7 +21,7 @@ const login = (req, res, next) => {
             username: username
         }
     }).then(users => {
-        if (!users) {
+        if (users.length === 0) {
             const error = new Error('User not found.');
             error.statusCode = 404;
             throw error;
@@ -41,7 +41,7 @@ const login = (req, res, next) => {
             userId: loadedUser.userId.toString(),
             role: loadedUser.role
         },
-            'testsercetkey'
+            'testsecretkey'
         );
         res.status(200).json({ token: token, userId: loadedUser.userId.toString() });
     }).catch(err => {

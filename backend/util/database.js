@@ -189,6 +189,19 @@ Item.belongsTo(Category, {
     foreignKey: "categoryId"
 });
 
+const states = {
+    open: "open",
+    cancelled: "cancelled",
+    made: "made",
+    closed: "closed"
+};
+
+const roles = {
+    admin: "admin",
+    server: "server",
+    cooker: "cooker"
+};
+
 
 exports.Category = Category;
 exports.Order = Order;
@@ -197,5 +210,8 @@ exports.OrderItem = OrderItem;
 exports.Table = Table;
 exports.User = User;
 exports.Reservation = Reservation;
+
+exports.states = states;
+exports.roles = roles;
 
 exports.sequelize = sequelize;

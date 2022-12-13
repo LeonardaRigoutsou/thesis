@@ -6,7 +6,7 @@
         "version": "1.0.1"
     },
     "host": "localhost:8080",
-    "basepath": "/api",
+    "basePath": "/api",
     "tags": [
         {
             "name": "Users",
@@ -33,6 +33,19 @@
     ],
     "produces": [
         "application/json"
+    ],
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer token for user authentication & authorization"
+        }
+    },
+    "security": [
+        {
+            "Bearer": []
+        }
     ],
     "paths": {
         "/login": {
@@ -397,73 +410,6 @@
                 }
             }
         },
-        "/orderItem/{orderId}/{itemId}": {
-            "put": {
-                "summary": "Updates an ordered item of an order",
-                "tags": [
-                    "Ordering"
-                ],
-                "consumes": "application/json",
-                "parameters": [
-                    {
-                        "name": "OrderItem",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/OrderItem"
-                        },
-                        "required": true
-                    },
-                    {
-                        "name": "orderId",
-                        "in": "path",
-                        "schema": {
-                            "type": "integer"
-                        },
-                        "required": true
-                    },
-                    {
-                        "name": "itemId",
-                        "in": "path",
-                        "schema": {
-                            "type": "integer"
-                        },
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/OrderItem"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "message": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "message": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "message": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/users": {
             "get": {
                 "summary": "Returns a list of all users",
@@ -547,18 +493,18 @@
                 "consumes": "application/json",
                 "parameters": [
                     {
-                        "name": "user",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        },
-                        "required": true
-                    },
-                    {
                         "name": "id",
                         "in": "path",
                         "schema": {
                             "type": "integer"
+                        },
+                        "required": true
+                    },
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/User"
                         },
                         "required": true
                     }
@@ -735,6 +681,53 @@
                 }
             }
         },
+        "/reservations/{tableNum}": {
+            "get": {
+                "summary": "Returns a list of reservations for the specific table number",
+                "tags": [
+                    "Admin",
+                    "Reservations"
+                ],
+                "consumes": "application/json",
+                "parameters": [
+                    {
+                        "name": "tableNum",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Reservation"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "message": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "message": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/reservation/{reservationId}": {
             "put": {
                 "summary": "Updates an existing reservation",
@@ -749,6 +742,14 @@
                         "in": "path",
                         "schema": {
                             "type": "integer"
+                        },
+                        "required": true
+                    },
+                    {
+                        "name": "reservation",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Reservation"
                         },
                         "required": true
                     }
@@ -1056,7 +1057,7 @@
                 "consumes": "application/json",
                 "parameters": [
                     {
-                        "name": "item",
+                        "name": "category",
                         "in": "body",
                         "schema": {
                             "$ref": "#/definitions/Category"
@@ -1155,73 +1156,19 @@
                 }
             }
         },
-        "/map": {
+        "/table": {
             "post": {
-                "summary": "Creates a new map",
+                "summary": "Creates a new table",
                 "tags": [
                     "Admin"
                 ],
                 "consumes": "application/json",
                 "parameters": [
                     {
-                        "name": "map",
+                        "name": "table",
                         "in": "body",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Table"
-                            }
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "message": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "message": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "message": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "summary": "Updates a map",
-                "tags": [
-                    "Admin"
-                ],
-                "consumes": "application/json",
-                "parameters": [
-                    {
-                        "name": "map",
-                        "in": "body",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Table"
-                            }
+                            "$ref": "#/definitions/Table"
                         }
                     }
                 ],
@@ -1259,7 +1206,64 @@
                 }
             }
         },
-        "/map/table/{tableId}": {
+        "/table/{tableNum}": {
+            "put": {
+                "summary": "Updates a table",
+                "tags": [
+                    "Admin"
+                ],
+                "consumes": "application/json",
+                "parameters": [
+                    {
+                        "name": "tableNum",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    },
+                    {
+                        "name": "table",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Table"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "message": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "message": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "message": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
             "delete": {
                 "summary": "Deletes a table from the map",
                 "tags": [
@@ -1268,7 +1272,7 @@
                 "consumes": "application/json",
                 "parameters": [
                     {
-                        "name": "tableId",
+                        "name": "tableNum",
                         "in": "path",
                         "schema": {
                             "type": "integer"
@@ -1319,9 +1323,6 @@
                 "orderDate"
             ],
             "properties": {
-                "orderId": {
-                    "type": "integer"
-                },
                 "serverId": {
                     "type": "integer"
                 },
@@ -1336,6 +1337,12 @@
                 },
                 "instructions": {
                     "type": "string"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/OrderItem"
+                    }
                 }
             }
         },
@@ -1359,12 +1366,10 @@
             "required": [
                 "orderId",
                 "itemId",
-                "quantity"
+                "quantity",
+                "status"
             ],
             "properties": {
-                "orderId": {
-                    "type": "integer"
-                },
                 "itemId": {
                     "type": "integer"
                 },
@@ -1382,11 +1387,8 @@
         "User": {
             "type": "object",
             "properties": {
-                "userId": {
-                    "type": "integer"
-                },
                 "username": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "password": {
                     "type": "string"
@@ -1407,9 +1409,6 @@
         },
         "Item": {
             "properties": {
-                "itemId": {
-                    "type": "integer"
-                },
                 "categoryId": {
                     "type": "integer"
                 },
@@ -1429,9 +1428,6 @@
         },
         "Category": {
             "properties": {
-                "categoryId": {
-                    "type": "integer"
-                },
                 "name": {
                     "type": "string"
                 },
@@ -1442,9 +1438,6 @@
         },
         "Reservation": {
             "properties": {
-                "reservationId": {
-                    "type": "integer"
-                },
                 "tableNum": {
                     "type": "integer"
                 },
