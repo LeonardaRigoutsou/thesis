@@ -18,6 +18,34 @@ const getItems = (req, res, next) => {
     });
 };
 
+const getItemsByCategoryId = async (req, res, next) => {
+    const categoryId = req.params.categoryId;
+    try {
+        if (!Number.isInteger(+categoryId)) {
+            const error = new Error('Category Id is not an integer number.');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        const items = await db.Item.findAll({
+            where: {
+                categoryId: categoryId
+            }
+        });
+
+        if (!items) {
+            const error = new Error('Items not found.');
+            error.statusCode = 404;
+            throw error;
+        }
+
+        console.log(items);
+        res.status(200).json({ items });
+    } catch (error) {
+        next(error);
+    }
+}
+
 const createItem = async (req, res, next) => {
     const { categoryId, title, price, isAvailable, ingredients } = req.body;
 
@@ -109,3 +137,4 @@ exports.getItems = getItems;
 exports.createItem = createItem;
 exports.deleteItem = deleteItem;
 exports.updateItem = updateItem;
+exports.getItemsByCategoryId = getItemsByCategoryId;

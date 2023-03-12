@@ -7,7 +7,8 @@ const getOrders = async (req, res, next) => {
         const fetchedOrders = await db.Order.findAll({
             order: [
                 ['orderId', 'ASC']
-            ]
+            ],
+            include: { model: db.Item }
         });
 
         if (!fetchedOrders) {
@@ -16,21 +17,7 @@ const getOrders = async (req, res, next) => {
             throw error;
         }
 
-        let orders = [];
-        for (let order of fetchedOrders) {
-            const orderItems = await db.OrderItem.findAll({
-                where: {
-                    orderId: order.orderId
-                }
-            });
-
-            orders.push({
-                ...order.dataValues,
-                orderItems
-            })
-        }
-
-        res.status(200).json({ orders });
+        res.status(200).json({ fetchedOrders });
     } catch (error) {
         next(error);
     }
@@ -43,7 +30,8 @@ const getOrderById = async (req, res, next) => {
         const order = await db.Order.findOne({
             where: {
                 orderId: orderId
-            }
+            },
+            include: { model: db.Item }
         });
 
         if (!order) {
@@ -52,13 +40,13 @@ const getOrderById = async (req, res, next) => {
             throw error;
         }
 
-        const orderItems = await db.OrderItem.findAll({
-            where: {
-                orderId: order.orderId
-            }
-        });
+        // const orderItems = await db.OrderItem.findAll({
+        //     where: {
+        //         orderId: order.orderId
+        //     }
+        // });
 
-        res.status(200).json({ ...order.dataValues, orderItems });
+        res.status(200).json({ order });
     } catch (error) {
         next(error);
     }

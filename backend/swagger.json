@@ -157,6 +157,44 @@
                 }
             }
         },
+        "/items/{categoryId}": {
+            "get": {
+                "summary": "Returns a list of items from a category",
+                "tags": [
+                    "Ordering"
+                ],
+                "consumes": "application/json",
+                "parameters": [
+                    {
+                        "name": "categoryId",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Item"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "message": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/items": {
             "get": {
                 "summary": "Returns a list of items",

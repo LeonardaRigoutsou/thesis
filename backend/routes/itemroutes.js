@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.get('/items', authenticate, authorize(['server', 'admin']), itemController.getItems);
 
+router.get('/items/:categoryId', authenticate, authorize(['server', 'admin']), itemController.getItemsByCategoryId);
+
 router.post('/item', authenticate, authorize(['admin']), itemController.createItem);
 
 router.delete('/item/:id', authenticate, authorize(['admin']), itemController.deleteItem);
