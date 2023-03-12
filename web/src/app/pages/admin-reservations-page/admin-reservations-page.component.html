@@ -1,0 +1,36 @@
+<div class="reservations-page">
+    <div class="employee-wrapper">
+        <div class="reservarions-date">
+            <label class="date-label">Date:</label>
+            <button (click)="previousDate(currentDate)" class="date-arrow-left"><img
+                    src="../../../assets/dateArrow.png"></button>
+            <label class="date-format">{{currentDate | date}}</label>
+            <button (click)="nextDate(currentDate)" class="date-arrow-right"><img
+                    src="../../../assets/dateArrow.png"></button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Reservation Name</th>
+                    <th>Reservation Date</th>
+                    <th>Table Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let reservation of reservations">
+                    <td>{{reservation.reservationName}}</td>
+                    <td>{{reservation.reservationDate | date}}</td>
+                    <td>{{reservation.tableNum}}</td>
+                    <td><button (click)="openEditReservationDialog(reservation)" class="editButton"><img
+                                src="../../../assets/editbutton.png">
+                        </button><button (click)="openConfirmationDialog(reservation.reservationId)"
+                            class="deleteButton"><img src="../../../assets/deletebutton.png"></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <app-icon-button class="home-button" [img]="'../../../assets/homebutton.png'" routerLink="/admin">
+        </app-icon-button>
+        <button class="newReservation" (click)="openNewReservationDialog()">New Reservation</button>
+    </div>
+</div>

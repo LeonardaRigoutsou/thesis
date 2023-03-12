@@ -1,0 +1,27 @@
+<div class="newReservationModal">
+    <form [formGroup]="newReservationForm" class="new-reservation-form" ngModelGroup="reservationData">
+        <div mat-dialog-content>
+            <h1 mat-dialog-title class="new-reservation-title-dialog">
+                {{this.data.editMode ? 'Edit Reservation' : 'New Reservation'}}
+            </h1>
+            <table>
+                <tr>
+                    <td><label class="field-label">Reservation Name:</label></td>
+                    <td><input class="field-input" formControlName="reservationName" type="text"></td>
+                </tr>
+                <tr>
+                    <td><label class="field-label">Reservation Date:</label></td>
+                    <td><input class="field-input" formControlName="reservationDate" type="datetime-local"></td>
+                </tr>
+                <tr>
+                    <td><label class="field-label">Table Number:</label></td>
+                    <td><input class="field-input" formControlName="tableNum" type="text"></td>
+                </tr>
+                <tr>
+                    <button class="submit-button" *ngIf="this.data.editMode" (click)="onUpdate()">Update</button>
+                    <button class="submit-button" *ngIf="!this.data.editMode" (click)="onCreate()">Create</button>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
