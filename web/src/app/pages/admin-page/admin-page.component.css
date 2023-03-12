@@ -1,0 +1,12 @@
+.admin-page {
+    height: 100%;
+    width: 100%;
+    background-color: #bebebe;
+    padding: 200px;
+}
+
+.admin-page-row {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 100px;
+}
