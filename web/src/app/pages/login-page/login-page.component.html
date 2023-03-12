@@ -1,0 +1,21 @@
+<div class="login-page">
+    <img class="logo" src="'../../../assets/olympiaLogo.png">
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form" ngModelGroup="userData">
+        <label for="username" class="field-label">Username:</label>
+        <input formControlName="username" id="username-field" class="input-field" placeholder="username" type="text">
+        <span class="form-validations"
+            *ngIf="!loginForm.get('username')?.valid && loginForm.get('username')?.touched">Please enter a valid
+            username
+        </span>
+
+        <label for="password" class="field-label">Password:</label>
+        <input formControlName="password" id="password-field" class="input-field" placeholder="* * * * * * * * * *"
+            type="password">
+        <span class="form-validations"
+            *ngIf="!loginForm.get('password')?.valid && loginForm.get('password')?.touched">Please enter a valid
+            password
+        </span>
+        <button class="login-button">L o g i n</button>
+        <p *ngIf="errorMessage" class="errorMessage"> {{ this.errorMessage }} </p>
+    </form>
+</div>

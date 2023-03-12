@@ -1,0 +1,76 @@
+.login-page {
+    background-color: white;
+    height: 100%;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.logo {
+    width: 20%;
+    height: 20%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 80px;
+}
+
+.login-form {
+    display: grid;
+    margin-left: 43%;
+    width: 15%;
+}
+
+.field-label {
+    padding-top: 15px;
+}
+
+.input-field {
+    border-radius: 20px;
+    padding: 12px 20px;
+    margin: 5px;
+}
+
+.input-field.ng-invalid.ng-touched {
+    border: 2px solid red
+}
+
+#username-field {
+    background-image: url("../../../assets/userInputField.png");
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    padding-left: 30px;
+}
+
+#password-field {
+    background-image: url("../../../assets/keyInputField.png");
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    padding-left: 30px;
+}
+
+.login-button {
+    border-radius: 18px;
+    padding: 12px 20px;
+    margin-top: 50px;
+    background-color: #5b5b5b;
+    color: white;
+}
+
+.login-button:hover {
+    transform: scale(0.98);
+}
+
+.form-validations {
+    color: red;
+}
+
+.errorMessage {
+    color: red;
+    background-color: pink;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 50px;
+    text-align: center;
+}
