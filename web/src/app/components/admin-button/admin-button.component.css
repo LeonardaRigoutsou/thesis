@@ -1,0 +1,19 @@
+.admin-button {
+    background-color: #5b5b5b;
+    height: 200px;
+    width: 200px;
+    border-radius: 5%;
+    color: white;
+    font-size: medium;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.admin-button img {
+    padding: 15%;
+}
+
+.admin-button p {
+    font-size: x-large;
+}
