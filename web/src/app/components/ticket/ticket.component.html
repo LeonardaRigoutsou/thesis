@@ -1,0 +1,31 @@
+<div class="ticket">
+    <div class="ticket-header">
+        <div>
+            <p>Order #125</p>
+            <p>Server: George</p>
+        </div>
+        <div>
+            <p>13:45</p>
+        </div>
+    </div>
+    <div class="ticket-item-list">
+        <!-- <ul>
+            <li *ngFor="let item of order.items">
+                <div class="ticket-item">{{item.item.title}}</div>
+            </li>
+        </ul> -->
+    </div>
+    <div class="ticket-instructions">Instructions:</div>
+    <div class="ticket-total" *ngIf="isMode(TicketMode.Total)">Total: </div>
+    <div class="ticket-buttons" *ngIf="isMode(TicketMode.Buttons)">
+        <button class="cancel-button">
+            <img src="../../../assets/closebutton.png" />
+        </button>
+        <button class="made-button">
+            <img src="../../../assets/madebutton.png" />
+        </button>
+    </div>
+    <div class="ticket-label" *ngIf="isMode(TicketMode.Labels)">
+
+    </div>
+</div>

@@ -1,0 +1,37 @@
+.order-title {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.home-button {
+    border: none;
+    background-color: #BEBEBE;
+}
+
+.order-menu-components {
+    display: flex;
+    margin-top: 3%;
+}
+
+.order-menu-wrapper {
+    margin-right: 20%;
+}
+
+.buttons-group {
+    margin-top: 10%;
+}
+
+.buttons-group-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5%;
+}
+
+.order-action-button {
+    width: 45%;
+    height: 20%;
+    padding: 5%;
+    background-color: white;
+    border-radius: 5px;
+    font-weight: bolder;
+}

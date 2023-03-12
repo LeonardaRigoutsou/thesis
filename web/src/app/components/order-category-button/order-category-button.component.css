@@ -1,0 +1,10 @@
+.category-button {
+    background-color: #BEBEBE;
+    border-radius: 5px;
+    width: 200px;
+    height: 100px;
+    margin-left: 10%;
+    margin-top: 10%;
+    color: black;
+    font-size: large;
+}
