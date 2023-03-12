@@ -1,0 +1,37 @@
+.confirmationModal {
+    background-color: #BEBEBE;
+    position: fixed;
+    top: 40%;
+    left: 40%;
+    border-radius: 10px;
+    width: 25%;
+    height: 20%;
+}
+
+.dialogMessage {
+    margin-top: 20px;
+    text-align: center;
+    font-size: medium;
+}
+
+.dialogActions {
+    background-color: white;
+    border: none;
+    padding: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 10%;
+    margin-top: 10%;
+    margin-left: 30px;
+    margin-right: 30px;
+    font-weight: bold;
+}
+
+.dialogActions:hover {
+    transform: scale(0.95);
+}
+
+.mat-mdc-dialog-actions {
+    justify-content: center;
+    margin-bottom: 10%;
+}

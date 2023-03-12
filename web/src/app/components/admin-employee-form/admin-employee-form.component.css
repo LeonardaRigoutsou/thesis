@@ -1,0 +1,57 @@
+.new-employee-title-dialog {
+    margin-top: 10px;
+    text-align: center;
+    font-size: xx-large;
+    font-weight: bold;
+    color: #5B5B5B;
+    margin-bottom: 20px;
+
+}
+
+.new-employee-form {
+    background-color: #BEBEBE;
+    position: fixed;
+    top: 25%;
+    left: 40%;
+    border-radius: 10px;
+    width: 25%;
+    height: 55%;
+}
+
+.field-label {
+    margin: 15px;
+    color: #5B5B5B;
+    font-size: medium;
+}
+
+.field-input {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left: 30px;
+    width: 85%;
+}
+
+.submit-button {
+    border-radius: 5px;
+    background-color: #5B5B5B;
+    color: white;
+    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 30%;
+    font-size: large;
+    margin-left: 80%;
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+}
+
+.warnings {
+    position: absolute;
+
+}
+
+.form-validations {
+    color: red;
+}

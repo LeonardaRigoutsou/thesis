@@ -1,0 +1,9 @@
+<div class="confirmationModal">
+    <div mat-dialog-content class="dialogMessage">
+        <p>Are you sure you want to delete this item?</p>
+    </div>
+    <div mat-dialog-actions>
+        <button class="dialogActions" mat-button (click)="onNoClick()">No</button>
+        <button class="dialogActions" mat-button cdkFocusInitial (click)="onYesClick()">Yes</button>
+    </div>
+</div>

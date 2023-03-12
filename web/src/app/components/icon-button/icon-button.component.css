@@ -1,0 +1,11 @@
+.icon-button {
+    position: absolute;
+    bottom: 5%;
+    right: 3%;
+    border: none;
+    background-color: transparent;
+}
+
+.icon-button:hover {
+    transform: scale(0.9);
+}

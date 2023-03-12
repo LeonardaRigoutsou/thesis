@@ -1,0 +1,52 @@
+<div class="newEmployeeModal">
+    <form [formGroup]="newEmployeeForm" class="new-employee-form" ngModelGroup="employeeData">
+        <div mat-dialog-content>
+            <h1 mat-dialog-title class="new-employee-title-dialog">
+                {{this.data.editMode ? 'Edit Employee' : 'New Employee'}}
+            </h1>
+            <table>
+                <tr>
+                    <td><label class="field-label">First Name:</label></td>
+                    <td><input class="field-input" formControlName="firstName" type="text"></td>
+                </tr>
+                <tr>
+                    <div class="form-validations"
+                        *ngIf="!newEmployeeForm.get('firstName')?.valid && newEmployeeForm.get('firstName')?.touched">
+                        Please
+                        enter a valid
+                        firstname
+                    </div>
+                </tr>
+                <tr>
+                    <td><label class="field-label">Last Name:</label></td>
+                    <td><input class="field-input" formControlName="lastName" type="text"></td>
+                </tr>
+                <tr>
+                    <td><label class="field-label">Hire Date:</label></td>
+                    <td><input class="field-input" formControlName="hireDate" type="date"></td>
+                </tr>
+                <tr>
+                    <td><label class="field-label">Username:</label></td>
+                    <td><input class="field-input" formControlName="username" type="text"></td>
+                </tr>
+                <tr>
+                    <td><label class="field-label">Password:</label></td>
+                    <td><input class="field-input" formControlName="password" type="password"></td>
+                </tr>
+                <tr>
+                    <td><label class="field-label" for="roles">Role:</label></td>
+                    <td><select class="field-input" formControlName="role" name="roles" id="roles">
+                            <option value="admin">Admin</option>
+                            <option value="server">Server</option>
+                            <option value="cooker">Cooker</option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <button class="submit-button" *ngIf="this.data.editMode" (click)="onUpdate()">Update</button>
+                    <button class="submit-button" *ngIf="!this.data.editMode" (click)="onCreate()">Create</button>
+                </tr>
+            </table>
+        </div>
+        <p class="warnings">tregvyuehru</p>
+    </form>
+</div>

@@ -1,0 +1,33 @@
+<div class="employee-page">
+    <div class="employee-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Hire Date</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <td>{{user.firstName}}</td>
+                    <td>{{user.lastName}}</td>
+                    <td>{{user.hireDate | date}}</td>
+                    <td>{{user.username}}</td>
+                    <td>{{user.role}}</td>
+                    <td><button (click)="openEditEmployeeDialog(user)" class="editButton"><img
+                                src="../../../assets/editbutton.png">
+                        </button><button (click)="openConfirmationDialog(user.userId)" class="deleteButton"><img
+                                src="../../../assets/deletebutton.png"></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <app-icon-button class="home-button" [img]="'../../../assets/homebutton.png'" routerLink="/admin">
+        </app-icon-button>
+        <button class="newEmployee" (click)="openNewEmployeeDialog()">New Employee</button>
+    </div>
+</div>
