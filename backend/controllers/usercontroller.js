@@ -5,7 +5,8 @@ const getUsers = (req, res, next) => {
     db.User.findAll({
         order: [
             ['userId', 'ASC']
-        ]
+        ],
+        attributes: { exclude: ['password'] }
     }).then(users => {
         if (users.length === 0) {
             const error = new Error('User not found.');
