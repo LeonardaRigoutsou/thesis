@@ -2,11 +2,9 @@
     <div class="employee-wrapper">
         <div class="reservarions-date">
             <label class="date-label">Date:</label>
-            <button (click)="previousDate(currentDate)" class="date-arrow-left"><img
-                    src="../../../assets/dateArrow.png"></button>
-            <label class="date-format">{{currentDate | date}}</label>
-            <button (click)="nextDate(currentDate)" class="date-arrow-right"><img
-                    src="../../../assets/dateArrow.png"></button>
+            <button (click)="previousDate()" class="date-arrow-left"><img src="../../../assets/dateArrow.png"></button>
+            <label class="date-format">{{ currentDate | date }}</label>
+            <button (click)="nextDate()" class="date-arrow-right"><img src="../../../assets/dateArrow.png"></button>
         </div>
         <table>
             <thead>
@@ -17,10 +15,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let reservation of reservations">
-                    <td>{{reservation.reservationName}}</td>
-                    <td>{{reservation.reservationDate | date}}</td>
-                    <td>{{reservation.tableNum}}</td>
+                <tr *ngFor="let reservation of filteredReservations">
+                    <td>{{ reservation.reservationName }}</td>
+                    <td>{{ reservation.reservationDate | date: 'short' }}</td>
+                    <td>{{ reservation.tableNum }}</td>
                     <td><button (click)="openEditReservationDialog(reservation)" class="editButton"><img
                                 src="../../../assets/editbutton.png">
                         </button><button (click)="openConfirmationDialog(reservation.reservationId)"

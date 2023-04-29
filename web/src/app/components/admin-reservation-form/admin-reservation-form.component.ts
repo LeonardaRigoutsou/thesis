@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AuthService } from 'src/app/services/auth.service';
 import { Reservation, ReservationService } from 'src/app/services/reservation.service';
+import { Table, TableService } from 'src/app/services/table.service';
 import { AdminEmployeeFormComponent } from '../admin-employee-form/admin-employee-form.component';
 
 @Component({
@@ -13,11 +13,14 @@ import { AdminEmployeeFormComponent } from '../admin-employee-form/admin-employe
 export class AdminReservationFormComponent {
   newReservationForm: FormGroup;
   errorMessage: string = "";
+  tables: Table[] = [];
 
-  constructor(private authService: AuthService, private reservationService: ReservationService,
+  constructor(private reservationService: ReservationService, private tableService: TableService,
     public dialogRef: MatDialogRef<AdminEmployeeFormComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
+    this.getTables();
+
     this.newReservationForm = new FormGroup({
       'reservationName': new FormControl("", Validators.required),
       'reservationDate': new FormControl("", Validators.required),
@@ -32,20 +35,23 @@ export class AdminReservationFormComponent {
     }
   }
 
+  getTables(): void {
+    this.tableService.getTables().then(tables => {
+      this.tables = tables;
+    });
+  }
+
   onCreate(): void {
     let newReservation = this.formToReservation();
-    this.reservationService.createReservation(newReservation).then(message => {
-      this.errorMessage = message;
-    });
+    this.errorMessage = this.reservationService.createReservation(newReservation);
     this.dialogRef.close();
   }
 
   onUpdate(): void {
     let newReservation = this.formToReservation();
-    this.reservationService.updateReservation(newReservation, this.data.reservation.reservationId).then(message => {
-      this.errorMessage = message;
-    });
-    this.dialogRef.close();
+    newReservation.reservationId = this.data.reservation.reservationId;
+    this.errorMessage = this.reservationService.updateReservation(newReservation, this.data.reservation.reservationId);
+    this.dialogRef.close({ data: newReservation });
   }
 
   private formToReservation(): Reservation {

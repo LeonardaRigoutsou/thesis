@@ -15,11 +15,16 @@
                 </tr>
                 <tr>
                     <td><label class="field-label">Table Number:</label></td>
-                    <td><input class="field-input" formControlName="tableNum" type="text"></td>
+                    <td><select class="field-input" formControlName="tableNum">
+                            <option *ngFor="let table of tables" [value]="table.tableNum">{{ table.tableNum }}</option>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
-                    <button class="submit-button" *ngIf="this.data.editMode" (click)="onUpdate()">Update</button>
-                    <button class="submit-button" *ngIf="!this.data.editMode" (click)="onCreate()">Create</button>
+                    <button class="submit-button" [disabled]="!newReservationForm.valid" *ngIf="this.data.editMode"
+                        (click)="onUpdate()">Update</button>
+                    <button class="submit-button" [disabled]="!newReservationForm.valid" *ngIf="!this.data.editMode"
+                        (click)="onCreate()">Create</button>
                 </tr>
             </table>
         </div>

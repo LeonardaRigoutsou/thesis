@@ -1,5 +1,6 @@
-import { Injectable, OnInit } from '@angular/core';
-import { AuthService } from './auth.service';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 export interface Reservation {
     tableNum: number,
@@ -12,111 +13,95 @@ export interface Reservation {
     providedIn: 'root'
 })
 export class ReservationService {
-    reservations: Reservation[] = [];
+    reservations: BehaviorSubject<Reservation[]> = new BehaviorSubject<Reservation[]>([]);
     token: string = '';
 
-    constructor(private authService: AuthService) { }
+    constructor(private http: HttpClient) { }
 
-    async getReservations(): Promise<Reservation[]> {
-
-        try {
-            const response: Response = await fetch('http://localhost:8080/api/reservations', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
-                }
-            });
-
-            if (response.status === 200) {
-                await response.json().then(body => { this.reservations = body.reservations; });
+    getReservations() {
+        this.http.get<{ reservations: Reservation[] }>('http://localhost:8080/api/reservations', {
+            'headers': {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        } catch (err) {
-            console.log(err);
-        }
-
-        return this.reservations;
+        }).subscribe({
+            next: (value) => {
+                this.reservations.next(value.reservations);
+            },
+            error: (error) => {
+                console.log(error);
+            },
+            complete: () => { }
+        });
     }
 
-    async createReservation(newReservation: Reservation): Promise<string> {
+    createReservation(newReservation: Reservation): string {
         let errorMessage: string = "";
-        try {
-            const response: Response = await fetch('http://localhost:8080/api/reservation', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
-                },
-                body: JSON.stringify(newReservation)
-            });
 
-            if (response.status === 200) {
-                await response.json().then(body => this.reservations.push(body.reservation));
-            } else if (response.status === 500 || response.status === 409) {
-                await response.json().then(body => errorMessage = body.message);
+        this.http.post<{ newReservation: Reservation }>('http://localhost:8080/api/reservation', newReservation, {
+            'headers': {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        } catch (err) {
-            console.log(err);
-        }
+        }).subscribe({
+            next: (value) => {
+                let newReservations = this.reservations.getValue();
+                newReservations.push(value.newReservation);
+                this.reservations.next(newReservations);
+            },
+            error: (error) => {
+                errorMessage = error.message
+            },
+            complete: () => { }
+        });
 
         return errorMessage;
     }
 
-    async updateReservation(editedReservation: Reservation, reservationId: number): Promise<string> {
+    updateReservation(editedReservation: Reservation, reservationId: number): string {
         let errorMessage: string = "";
-        try {
-            const response: Response = await fetch('http://localhost:8080/api/reservation/' + reservationId, {
-                method: 'PUT',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
-                },
-                body: JSON.stringify(editedReservation)
-            });
 
-            if (response.status === 200) {
-                const index = this.reservations.findIndex(reservation => {
+        this.http.put<{ reservation: Reservation }>('http://localhost:8080/api/reservation/' + reservationId, editedReservation, {
+            "headers": {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).subscribe({
+            next: (value) => {
+                let newReservations = this.reservations.getValue();
+                const index = newReservations.findIndex(reservation => {
                     return reservation.reservationId === editedReservation.reservationId
                 });
-                console.log(index);
-                this.reservations.splice(index, 1, editedReservation);
-            } else if (response.status === 500 || response.status === 400) {
-                await response.json().then(body => errorMessage = body.message);
-            }
+                newReservations.splice(index, 1, editedReservation);
+                this.reservations.next(newReservations);
+            },
+            error: (error) => {
+                errorMessage = error.message;
 
-        } catch (err) {
-            console.log(err);
-        }
+            },
+            complete: () => { console.log(this.reservations) }
+        });
+
         return errorMessage;
     }
 
-    async deleteReservation(reservationId: number): Promise<string> {
+    deleteReservation(reservationId: number): string {
         let errorMessage: string = "";
-        try {
-            const response: Response = await fetch('http://localhost:8080/api/reservation/' + reservationId, {
-                method: 'DELETE',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
-                }
-            });
 
-            if (response.status === 200) {
-                const index = this.reservations.findIndex(reservation => {
+        this.http.delete<{ reservation: Reservation }>('http://localhost:8080/api/reservation/' + reservationId, {
+            'headers': {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).subscribe({
+            next: (value) => {
+                const index = this.reservations.getValue().findIndex(reservation => {
                     reservation.reservationId === reservationId
                 })
-                this.reservations.splice(index, 1);
-            } else if (response.status === 500 || response.status === 400 || response.status === 404) {
-                await response.json().then(body => errorMessage = body.message);
-            }
+                this.reservations.getValue().splice(index, 1);
+            },
+            error: (error) => {
+                errorMessage = error.message;
+            },
+            complete: () => { }
+        });
 
-        } catch (err) {
-            console.log(err);
-        }
         return errorMessage;
 
     }
