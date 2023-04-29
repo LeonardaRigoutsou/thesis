@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AdminButtonComponent } from './components/admin-button/admin-button.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
@@ -28,19 +29,24 @@ import { AdminReservationFormComponent } from './components/admin-reservation-fo
 import { AdminMenuListComponent } from './components/admin-menu-list/admin-menu-list.component';
 import { AdminCategoryFormComponent } from './components/admin-category-form/admin-category-form.component';
 import { AdminItemFormComponent } from './components/admin-item-form/admin-item-form.component';
+import { AuthGuardService } from './services/auth-guard.service';
+import { ItemButtonComponent } from './components/item-button/item-button.component';
+import { CategoryButtonComponent } from './components/category-button/category-button.component';
 
 const appRoutes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginPageComponent },
-  { path: 'admin', component: AdminPageComponent },
-  { path: 'admin/employees', component: AdminEmployeePageComponent },
-  { path: 'admin/reports', component: AdminReportsPageComponent },
-  { path: 'admin/map', component: AdminMapPageComponent },
-  { path: 'admin/editmenu', component: AdminEditmenuPageComponent },
-  { path: 'admin/reservations', component: AdminReservationsPageComponent },
-  { path: 'admin/images', component: AdminImagesPageComponent },
-  { path: 'server/map', component: ServerMapPageComponent },
-  { path: 'server/order', component: ServerOrderPageComponent },
-  { path: 'cooker/orders', component: CookerOrdersPageComponent }
+  { path: 'admin', component: AdminPageComponent, canActivate: [AuthGuardService] },
+  { path: 'admin/employees', component: AdminEmployeePageComponent, canActivate: [AuthGuardService] },
+  { path: 'admin/reports', component: AdminReportsPageComponent, canActivate: [AuthGuardService] },
+  { path: 'admin/map', component: AdminMapPageComponent, canActivate: [AuthGuardService] },
+  { path: 'admin/editmenu', component: AdminEditmenuPageComponent, canActivate: [AuthGuardService] },
+  { path: 'admin/reservations', component: AdminReservationsPageComponent, canActivate: [AuthGuardService] },
+  { path: 'admin/images', component: AdminImagesPageComponent, canActivate: [AuthGuardService] },
+  { path: 'server/map', component: ServerMapPageComponent, canActivate: [AuthGuardService] },
+  { path: 'server/order', component: ServerOrderPageComponent, canActivate: [AuthGuardService] },
+  { path: 'cooker/orders', component: CookerOrdersPageComponent, canActivate: [AuthGuardService] },
+  { path: '**', component: LoginPageComponent }
 
 ];
 
@@ -68,10 +74,13 @@ const appRoutes: Routes = [
     AdminReservationFormComponent,
     AdminMenuListComponent,
     AdminCategoryFormComponent,
-    AdminItemFormComponent
+    AdminItemFormComponent,
+    ItemButtonComponent,
+    CategoryButtonComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     RouterModule.forRoot(appRoutes),
     ReactiveFormsModule,
     MatDialogModule
