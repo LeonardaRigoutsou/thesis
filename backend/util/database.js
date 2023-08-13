@@ -1,6 +1,11 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('postgres://rykrhuky:5OVYPkBqUxPjTWoWfLa6Kk4pmVgediTi@tyke.db.elephantsql.com/rykrhuky', {});
+const sequelize = new Sequelize('postgres://rykrhuky:5OVYPkBqUxPjTWoWfLa6Kk4pmVgediTi@tyke.db.elephantsql.com/rykrhuky', {
+    pool: {
+        max: 5,
+        min: 1
+    },
+});
 
 const Category = sequelize.define('categories', {
     categoryId: {
@@ -13,6 +18,10 @@ const Category = sequelize.define('categories', {
     name: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    qualifierType: {
+        type: Sequelize.STRING,
+        allowNull: true
     },
     isAvailable: {
         type: Sequelize.BOOLEAN,
@@ -39,6 +48,10 @@ const Order = sequelize.define('orders', {
     orderDate: {
         type: Sequelize.DATE,
         allowNull: false
+    },
+    orderTotal: {
+        type: Sequelize.INTEGER,
+        allowNull: true
     },
     state: {
         type: Sequelize.STRING,
@@ -118,7 +131,7 @@ const Table = sequelize.define('tables', {
     },
     seats: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     locationX: {
         type: Sequelize.INTEGER,
@@ -168,6 +181,7 @@ const User = sequelize.define('users', {
 User.hasOne(Order, {
     foreignKey: "serverId"
 });
+
 Order.belongsTo(Table, {
     foreignKey: "tableNum"
 });
@@ -190,16 +204,22 @@ Item.belongsTo(Category, {
 });
 
 const states = {
-    open: "open",
-    cancelled: "cancelled",
-    made: "made",
-    closed: "closed"
+    new: "NEW",
+    open: "OPEN",
+    cancelled: "CANCELLED",
+    made: "MADE",
+    closed: "CLOSED"
 };
 
 const roles = {
     admin: "admin",
     server: "server",
     cooker: "cooker"
+};
+
+const qualifierTypes = {
+    coffee: "coffee",
+    drink: "drink"
 };
 
 

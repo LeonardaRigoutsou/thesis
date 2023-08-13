@@ -25,7 +25,7 @@ const createTable = async (req, res, next) => {
     try {
         const existingTableNum = await db.Table.findOne({
             where: {
-                tableNum: table.tableNum
+                tableNum: +table.tableNum
             }
         });
 
@@ -42,7 +42,7 @@ const createTable = async (req, res, next) => {
             }
         });
 
-        if (existingTableLocation.locationX === table.locationX && existingTableLocation.locationY === table.locationY) {
+        if (!!existingTableLocation && existingTableLocation.locationX === table.locationX && existingTableLocation.locationY === table.locationY) {
             const error = new Error('Table already exists in this location.');
             error.statusCode = 409;
             throw error;

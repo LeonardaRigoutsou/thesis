@@ -1,5 +1,6 @@
 const { Op } = require('sequelize');
 const db = require('../util/database');
+const { sendMessage } = require('../util/socket');
 
 const getOrders = async (req, res, next) => {
 
@@ -11,10 +12,25 @@ const getOrders = async (req, res, next) => {
             include: { model: db.Item }
         });
 
-        if (!fetchedOrders) {
-            const error = new Error('Could not find orders.');
-            error.statusCode = 404;
-            throw error;
+
+        for (let order of fetchedOrders) {
+            if (!fetchedOrders) {
+                const error = new Error('Could not find orders.');
+                error.statusCode = 404;
+                throw error;
+            }
+
+            const user = await db.User.findOne({
+                where: {
+                    userId: order.serverId
+                }
+            });
+
+            if (!user) {
+                return res.status(409).json({ message: 'Could not find a user for this order' });
+            }
+
+            order.dataValues.username = user.dataValues['username'];
         }
 
         res.status(200).json({ fetchedOrders });
@@ -40,7 +56,7 @@ const getOrderById = async (req, res, next) => {
             throw error;
         }
 
-        // const orderItems = await db.OrderItem.findAll({
+        // const orderitems = await db.OrderItem.findAll({
         //     where: {
         //         orderId: order.orderId
         //     }
@@ -52,13 +68,67 @@ const getOrderById = async (req, res, next) => {
     }
 };
 
+const getOrderByTableNum = async (req, res, next) => {
+    const tableNum = +req.params.tableId;
+
+    try {
+        const orders = await db.Order.findAll({
+            where: {
+                tableNum: tableNum
+            },
+            include: {
+                model: db.Item,
+            }
+        });
+
+        console.log(orders);
+        let mostRecentOrderDate = new Date(Math.max.apply(null, orders.map(order => {
+            return new Date(order.orderDate);
+        })));
+        let recentOrder = orders.filter(order => {
+            var recent = new Date(order.orderDate);
+            return recent.getTime() == mostRecentOrderDate.getTime();
+        })[0];
+        console.log(recentOrder);
+
+
+        if (recentOrder == null || recentOrder.state == 'CLOSED' || recentOrder.state == 'CANCELLED') {
+            return res.status(200).json({
+                order: {
+                    orderId: 0,
+                    serverId: '',
+                    tableNum: tableNum,
+                    orderDate: new Date(Date.now()).toString(),
+                    orderTotal: 0,
+                    state: db.states.new,
+                    instructions: '',
+                    items: []
+                }
+            });
+        }
+
+        const user = await db.User.findOne({
+            where: {
+                userId: recentOrder.serverId
+            }
+        });
+
+        if (!user) {
+            return res.status(409).json({ message: 'Could not find a user for this order' });
+        }
+        const username = user.dataValues['username'];
+        res.status(200).json({ order: { ...recentOrder.dataValues, username: username } });
+    } catch (error) {
+        next(error);
+    }
+};
+
 const createOrder = async (req, res, next) => {
-    const { serverId, tableNum, orderDate, instructions, items } = req.body;
+    const { serverId, tableNum, orderDate, orderTotal, instructions, items } = req.body;
 
     try {
         const order = await db.Order.findOne({
             where: {
-                serverId: serverId,
                 tableNum: tableNum,
                 [Op.or]: [
                     {
@@ -105,6 +175,7 @@ const createOrder = async (req, res, next) => {
             serverId: serverId,
             tableNum: tableNum,
             orderDate: orderDate,
+            orderTotal: orderTotal,
             state: db.states.open,
             instructions: instructions
         });
@@ -127,6 +198,8 @@ const createOrder = async (req, res, next) => {
                 where: {
                     itemId: item.itemId
                 }
+            }, {
+                raw: true
             })
 
             if (!fetchedItem) {
@@ -139,8 +212,10 @@ const createOrder = async (req, res, next) => {
                 itemId: item.itemId,
                 orderId: newOrder.orderId,
                 status: db.states.open,
-                quantity: item.quantity,
-                qualifiers: item.qualifiers
+                quantity: item.orderitems.quantity,
+                qualifiers: item.orderitems.qualifiers
+            }, {
+                raw: true
             })
 
             if (!orderItem) {
@@ -149,9 +224,11 @@ const createOrder = async (req, res, next) => {
                 throw error;
             }
 
-            orderedItems.push(orderItem);
+            orderedItems.push({ ...fetchedItem.dataValues, orderitems: orderItem });
         }
 
+
+        sendMessage('orders', { ...newOrder.dataValues, items: orderedItems });
         res.status(200).json({ ...newOrder.dataValues, items: orderedItems });
     } catch (error) {
         return next(error);
@@ -220,12 +297,12 @@ const updateOrder = async (req, res, next) => {
             throw error;
         }
 
-        let orderedItems = [];
         for (const item of items) {
             let fetchedItem = await db.Item.findOne({
                 where: {
                     itemId: item.itemId
-                }
+                },
+                raw: true
             })
 
             if (!fetchedItem) {
@@ -247,8 +324,8 @@ const updateOrder = async (req, res, next) => {
                     itemId: item.itemId,
                     orderId: orderId,
                     status: db.states.open,
-                    quantity: item.quantity,
-                    qualifiers: item.qualifiers
+                    quantity: item.orderitems.quantity == null ? 0 : item.orderitems.quantity,
+                    qualifiers: item.orderitems.qualifiers
                 });
 
                 if (!orderedItem) {
@@ -257,19 +334,17 @@ const updateOrder = async (req, res, next) => {
                     throw error;
                 }
 
-                orderedItems.push(orderItem[0].dataValues);
             } else {
                 orderedItem = await db.OrderItem.update({
                     itemId: item.itemId,
-                    status: item.status,
-                    quantity: item.quantity,
-                    qualifiers: item.qualifiers
+                    status: item.orderitems.status,
+                    quantity: item.orderitems.quantity == null ? 0 : item.orderitems.quantity,
+                    qualifiers: item.orderitems.qualifiers
                 }, {
                     where: {
                         orderId: orderId,
                         itemId: item.itemId
-                    },
-                    returning: true
+                    }
                 });
 
                 if (!orderedItem) {
@@ -277,11 +352,18 @@ const updateOrder = async (req, res, next) => {
                     error.statusCode = 409;
                     throw error;
                 }
-
-                orderedItems.push(orderedItem[1][0].dataValues);
             }
         }
-        res.status(200).json({ ...updatedOrder[1][0].dataValues, items: orderedItems });
+
+        const responseOrder = await db.Order.findOne({
+            where: {
+                orderId: orderId
+            },
+            include: db.Item
+        });
+
+        sendMessage('order', { order: responseOrder.dataValues });
+        res.status(200).json({ order: responseOrder.dataValues });
     } catch (error) {
         return next(error);
     }
@@ -289,5 +371,6 @@ const updateOrder = async (req, res, next) => {
 
 exports.getOrders = getOrders;
 exports.getOrderById = getOrderById;
+exports.getOrderByTableNum = getOrderByTableNum;
 exports.createOrder = createOrder;
 exports.updateOrder = updateOrder;

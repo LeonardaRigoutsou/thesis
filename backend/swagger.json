@@ -383,6 +383,57 @@
                 }
             }
         },
+        "/order/table/{tableNum}": {
+            "get": {
+                "summary": "Returns an existing order by table number",
+                "tags": [
+                    "Ordering"
+                ],
+                "consumes": "application/json",
+                "parameters": [
+                    {
+                        "name": "tableNum",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Order"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "message": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "message": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "message": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/orders": {
             "get": {
                 "summary": "Returns a list of orders",
@@ -1370,6 +1421,9 @@
                 "orderDate": {
                     "type": "string"
                 },
+                "orderTotal": {
+                    "type": "integer"
+                },
                 "state": {
                     "type": "string"
                 },
@@ -1379,7 +1433,7 @@
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/OrderItem"
+                        "$ref": "#/definitions/Item"
                     }
                 }
             }
@@ -1461,12 +1515,18 @@
                 },
                 "ingredients": {
                     "type": "string"
+                },
+                "orderitems": {
+                    "type": "#/definitions/OrderItem"
                 }
             }
         },
         "Category": {
             "properties": {
                 "name": {
+                    "type": "string"
+                },
+                "qualifierType": {
                     "type": "string"
                 },
                 "isAvailable": {

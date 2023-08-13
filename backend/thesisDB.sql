@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS orders (
 	instructions varchar(500)
 );
 
-CREATE TABLE IF NOT EXISTS orderItems (
+CREATE TABLE IF NOT EXISTS orderitems (
 	order_id INT NOT NULL,
 	FOREIGN KEY (order_id) REFERENCES orders (order_id),
 	item_id INT NOT NULL,

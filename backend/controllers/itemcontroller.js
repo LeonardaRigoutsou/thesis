@@ -1,11 +1,14 @@
 const db = require('../util/database');
 
 const getItems = (req, res, next) => {
-    db.Item.findAll({
-        order: [
-            ['itemId', 'ASC']
-        ]
-    }).then(items => {
+
+    try {
+        const items = db.Item.findAll({
+            order: [
+                ['itemId', 'ASC']
+            ]
+        });
+
         if (items.length === 0) {
             const error = new Error('Item not found.');
             error.statusCode = 404;
@@ -13,13 +16,14 @@ const getItems = (req, res, next) => {
         }
 
         res.status(200).json({ items });
-    }).catch(err => {
+    } catch (error) {
         next(err);
-    });
+    }
 };
 
 const getItemsByCategoryId = async (req, res, next) => {
     const categoryId = req.params.categoryId;
+
     try {
         if (!Number.isInteger(+categoryId)) {
             const error = new Error('Category Id is not an integer number.');
@@ -39,7 +43,6 @@ const getItemsByCategoryId = async (req, res, next) => {
             throw error;
         }
 
-        console.log(items);
         res.status(200).json({ items });
     } catch (error) {
         next(error);
@@ -76,7 +79,7 @@ const createItem = async (req, res, next) => {
             throw error;
         }
 
-        res.status(200).json({ newItem });
+        res.status(200).json({ item: newItem });
     } catch (error) {
         return next(error);
     }
@@ -84,53 +87,65 @@ const createItem = async (req, res, next) => {
 
 const deleteItem = (req, res, next) => {
     const itemId = req.params.id;
-    if (!Number.isInteger(+itemId)) {
-        const error = new Error('Item Id is not an integer number.');
-        error.statusCode = 400;
-        throw error;
-    }
-    db.Item.findOne({
-        where: {
-            itemId: itemId
+
+    try {
+
+        if (!Number.isInteger(+itemId)) {
+            const error = new Error('Item Id is not an integer number.');
+            error.statusCode = 400;
+            throw error;
         }
-    }).then(itemFound => {
-        db.Item.destroy({
+
+        const itemFound = db.Item.findOne({
             where: {
                 itemId: itemId
             }
-        }).then(item => {
-            if (!item) {
-                const error = new Error('Item not found.');
-                error.statusCode = 404;
-                throw error;
-            }
-
-            res.status(200).json(itemFound);
-        }).catch(err => {
-            next(err);
         });
-    }).catch(err => {
+
+        if (!itemFound) {
+            return res.status(404).json({ message: 'Could not find item to delete' });
+        }
+
+        const item = db.Item.destroy({
+            where: {
+                itemId: itemId
+            }
+        });
+
+        if (!item) {
+            const error = new Error('Item not found.');
+            error.statusCode = 404;
+            throw error;
+        }
+
+        res.status(200).json({ item: itemFound });
+    } catch (err) {
         next(err);
-    });
+    };
 };
 
 const updateItem = (req, res, next) => {
     const itemId = req.params.id;
-    if (!Number.isInteger(+itemId)) {
-        const error = new Error('Item Id is not an integer number');
-        error.statusCode = 400;
-        throw error;
-    }
-    db.Item.update({ ...req.body }, {
-        where: {
-            itemId: itemId
-        },
-        returning: true
-    }).then(updatedItem => {
-        res.status(200).json(updatedItem);
-    }).catch(err => {
+
+    try {
+
+        if (!Number.isInteger(+itemId)) {
+            const error = new Error('Item Id is not an integer number');
+            error.statusCode = 400;
+            throw error;
+        }
+        console.log(req.body);
+        const updatedItem = db.Item.update({ ...req.body }, {
+            where: {
+                itemId: itemId
+            },
+            returning: true
+        })
+
+        res.status(200).json({ item: updatedItem });
+    } catch (err) {
         next(err);
-    });
+    };
 };
 
 exports.getItems = getItems;
