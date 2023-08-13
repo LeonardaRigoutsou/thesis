@@ -65,7 +65,6 @@ export class AdminReservationsPageComponent {
   openConfirmationDialog(reservationId: number): void {
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
       width: '400px',
-      hasBackdrop: true
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result.data === 'yes') {
@@ -106,7 +105,6 @@ export class AdminReservationsPageComponent {
 
   openNewReservationDialog(): void {
     const dialogRef = this.dialog.open(AdminReservationFormComponent, {
-      width: '400px',
       data: {
         editMode: false,
         reservation: null

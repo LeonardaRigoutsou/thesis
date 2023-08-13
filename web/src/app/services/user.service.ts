@@ -1,6 +1,8 @@
 import { Injectable, OnInit } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Reservation } from './reservation.service';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 
 export interface User {
   userId: number,
@@ -16,13 +18,19 @@ export interface User {
   providedIn: 'root'
 })
 export class UserService {
-  createReservation(newReservation: Reservation) {
-    throw new Error('Method not implemented.');
-  }
+  user: BehaviorSubject<User> = new BehaviorSubject<User>({} as User);
   users: User[] = [];
   token: string = '';
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private http: HttpClient) { }
+
+  getUser(userId: number) {
+    let userFound = this.users.find(user => {
+      return userId != null && user.userId === +userId;
+    });
+
+    return userFound;
+  }
 
   async getUsers(): Promise<User[]> {
 
@@ -32,7 +40,7 @@ export class UserService {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       });
 
@@ -54,7 +62,7 @@ export class UserService {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         },
         body: JSON.stringify(newUser)
       });
@@ -79,7 +87,7 @@ export class UserService {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         },
         body: JSON.stringify(editedUser)
       });
@@ -88,7 +96,6 @@ export class UserService {
         const index = this.users.findIndex(user => {
           return user.userId === editedUser.userId
         });
-        console.log(index);
         this.users.splice(index, 1, editedUser);
       } else if (response.status === 500 || response.status === 400) {
         await response.json().then(body => errorMessage = body.message);
@@ -108,7 +115,7 @@ export class UserService {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       });
 

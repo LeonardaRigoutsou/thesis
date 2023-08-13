@@ -3,8 +3,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "ng serve",
-      "type": "pwa-chrome",
+      "type": "node",
       "request": "launch",
       "preLaunchTask": "npm: start",
       "url": "http://localhost:4200/"
@@ -14,7 +13,8 @@
       "type": "chrome",
       "request": "launch",
       "preLaunchTask": "npm: test",
-      "url": "http://localhost:9876/debug.html"
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}/web/src"
     }
   ]
 }

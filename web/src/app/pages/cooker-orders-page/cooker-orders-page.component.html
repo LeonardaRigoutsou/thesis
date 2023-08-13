@@ -1,1 +1,9 @@
-<p>cooker-orders-page works!</p>
+<div class="cooker-page">
+    <div *ngIf="filteredOrders" class="ticket-wrapper">
+        <ticket *ngFor="let order of filteredOrders | async" class="cooker-page-ticket" [order]="order"
+            [tableNumber]="order.tableNum" [showInstructions]="true" [mode]="ticketMode" [editMode]="false"></ticket>
+    </div>
+
+    <icon-button class="logout-button" (click)="onLogout()" [img]="'../../../assets/exit.png'">
+    </icon-button>
+</div>

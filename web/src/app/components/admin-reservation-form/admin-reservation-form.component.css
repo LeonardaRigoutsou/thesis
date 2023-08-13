@@ -8,13 +8,15 @@
 
 }
 
+.new-reservation-modal {}
+
 .new-reservation-form {
     background-color: #BEBEBE;
     position: fixed;
     top: 25%;
     left: 40%;
     border-radius: 10px;
-    width: 25%;
+    width: fit-content;
     height: 55%;
 }
 

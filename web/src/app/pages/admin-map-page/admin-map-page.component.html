@@ -1,1 +1,17 @@
-<p>admin-map-page works!</p>
+<div class="admin-map-page">
+    <div class="admin-map">
+        <ng-container #tables></ng-container>
+        <!-- <ng-template class="admin-map" #template></ng-template> -->
+        <ng-template class="insertion-point" insertionPoint></ng-template>
+    </div>
+    <div class="right-sidebar">
+        <div class="help-text">
+            <p>Drag the table and drop it to the map</p>
+        </div>
+        <button class="table-icon" (mousedown)="createDragableIcon($event)">New Table</button>
+
+    </div>
+
+    <icon-button class="home-button" [img]="'../../../assets/homebutton.png'" routerLink="/admin">
+    </icon-button>
+</div>

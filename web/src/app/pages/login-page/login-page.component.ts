@@ -24,9 +24,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   onLogin(): void {
-    console.log(this.loginForm);
     this.authService.login(this.loginForm.get('username')?.value, this.loginForm.get('password')?.value).then(value => {
-      console.log(value);
       this.errorMessage = value;
     });
   }

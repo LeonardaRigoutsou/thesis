@@ -1,0 +1,45 @@
+.table-button {
+    /* display: flex; */
+    /* justify-content:     center; */
+    /* position: absolute; */
+    /* top: 40%; */
+    /* left: 85%; */
+    position: absolute;
+}
+
+
+.delete-button {
+    border: none;
+    background: none;
+    /* position: relative; */
+}
+
+.delete-button:hover {
+    transform: scale(0.9);
+}
+
+.delete-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+.item-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.label-field {
+    width: 30px;
+}
+
+.error-message {
+    color: red;
+}
+
+.example-custom-placeholder {
+    background: #ccc;
+    border: dotted 3px #999;
+    min-height: 60px;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

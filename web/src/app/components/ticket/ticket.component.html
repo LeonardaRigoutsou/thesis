@@ -1,31 +1,44 @@
-<div class="ticket">
+<div class="ticket" [ngStyle]="getTicketStyle()">
     <div class="ticket-header">
         <div>
-            <p>Order #125</p>
-            <p>Server: George</p>
+            <p *ngIf="order?.orderId === 0">New Order</p>
+            <p *ngIf="!order || order?.orderId !== 0">Order #{{order.orderId}}</p>
+            <p>Server: {{ order.username }}</p>
         </div>
         <div>
-            <p>13:45</p>
+            <p>{{ order.orderDate | date: 'dd/MM/yy HH:mm'}}</p>
         </div>
     </div>
     <div class="ticket-item-list">
-        <!-- <ul>
-            <li *ngFor="let item of order.items">
-                <div class="ticket-item">{{item.item.title}}</div>
+        <ul>
+            <li class="ticket-list-item" *ngFor="let item of order?.items" [ngStyle]="getItemStyle(item)">
+                <div class="ticket-item">
+                    <b>{{ item?.orderitems?.quantity }}</b> {{item?.title}}
+                    <div class="qualifiers">{{ item?.orderitems?.qualifiers }}</div>
+                </div>
+                <div class="delete-icon">
+                    <button *ngIf="editMode || order.state === 'NEW'" class="item-image-button"
+                        (click)="onDeleteItem(item)"><img src="../../../assets/deletebutton.png" /></button>
+                </div>
             </li>
-        </ul> -->
+        </ul>
     </div>
-    <div class="ticket-instructions">Instructions:</div>
-    <div class="ticket-total" *ngIf="isMode(TicketMode.Total)">Total: </div>
-    <div class="ticket-buttons" *ngIf="isMode(TicketMode.Buttons)">
-        <button class="cancel-button">
+    <textarea type="text" class="ticket-instructions" *ngIf="showInstructions" maxlength="150" [disabled]="!editMode"
+        placeholder="Instructions:"></textarea>
+    <div class="ticket-instructions-empty" *ngIf="!(showInstructions)"></div>
+    <div class="ticket-total" *ngIf="isMode('TOTAL')">
+        Total: {{ (!!order ? order.orderTotal / 100 : 0) | number: '1.2-2'}} €
+    </div>
+    <div class="ticket-buttons" *ngIf="isMode('BUTTONS')">
+        <button class="cancel-button" (click)="cancelOrder($event)">
             <img src="../../../assets/closebutton.png" />
         </button>
-        <button class="made-button">
+        <button class="made-button" (click)="makeOrder($event)">
             <img src="../../../assets/madebutton.png" />
         </button>
     </div>
-    <div class="ticket-label" *ngIf="isMode(TicketMode.Labels)">
-
-    </div>
+    <!-- <div class="ticket-label" *ngIf="isMode('LABELS')"
+        [ngStyle]="{'color': order?.state === 'MADE' ? 'darkgreen' : (order?.state === 'CANCELLED' ? 'darkred' : 'black')}">
+        {{ order?.state }}
+    </div> -->
 </div>

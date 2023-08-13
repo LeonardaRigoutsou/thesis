@@ -1,5 +1,5 @@
 <div class="login-page">
-    <img class="logo" src="'../../../assets/olympiaLogo.png">
+    <img class="logo" src="http://localhost:8080/images/logo.png">
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form" ngModelGroup="userData">
         <label for="username" class="field-label">Username:</label>
         <input formControlName="username" id="username-field" class="input-field" placeholder="username" type="text">
@@ -16,6 +16,6 @@
             password
         </span>
         <button class="login-button">L o g i n</button>
-        <p *ngIf="errorMessage" class="errorMessage"> {{ this.errorMessage }} </p>
+        <p *ngIf="errorMessage" class="error-message"> {{ this.errorMessage }} </p>
     </form>
 </div>

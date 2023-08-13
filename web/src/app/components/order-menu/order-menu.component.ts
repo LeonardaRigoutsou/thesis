@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Category, CategoryService } from 'src/app/services/category.service';
 import { Item, ItemService } from 'src/app/services/item.service';
+import { OrderItem, OrderService, Status } from 'src/app/services/order.service';
+import { Qualifier } from '../item-button/item-button.component';
 
 @Component({
   selector: 'order-menu',
@@ -10,11 +12,12 @@ import { Item, ItemService } from 'src/app/services/item.service';
 export class OrderMenuComponent {
 
   categories: Category[];
-  items: Map<number, Item[]> = new Map<number, Item[]>();
+  itemsMap: Map<number, Item[]> = new Map<number, Item[]>();
   currentItems: Item[] | undefined;
   showCategory: boolean = false;
+  qualifier: Qualifier;
 
-  constructor(private categoryService: CategoryService, private itemService: ItemService) { }
+  constructor(private categoryService: CategoryService, private itemService: ItemService, private orderService: OrderService) { }
 
   ngOnInit() {
     this.loadCategories();
@@ -31,21 +34,51 @@ export class OrderMenuComponent {
   }
 
   loadItems(categoryId: number) {
-    this.itemService.getItemsByCategoryId(categoryId).then(items => {
-      this.items.set(categoryId, items);
+    this.itemService.getItemsByCategoryId(categoryId).subscribe(response => {
+      this.itemsMap.set(categoryId, response.items);
     });
   }
 
   categoryButtonHandler(categoryId: number) {
     this.showCategory = true;
-    this.currentItems = this.items.get(categoryId);
+    this.currentItems = this.itemsMap.get(categoryId);
   }
 
   goBackHandler() {
     this.showCategory = false;
   }
 
-  showCustomizationPanel() {
+  getQualifierTypeById(categoryId: number): string | undefined {
+    const index = this.categories.findIndex(category => {
+      return category.categoryId === categoryId;
+    });
+    return this.categories[index]?.qualifierType;
+  }
 
+  onAddQualifier(event: any) {
+    this.qualifier = event;
+  }
+
+  onItemClicked(newItem: Item) {
+    let order = this.orderService.order.getValue();
+    let qualifierString = Object.values(this.qualifier);
+    let item = JSON.parse(JSON.stringify(newItem));
+    item.orderitems = {
+      itemId: item.itemId,
+      qualifiers: qualifierString.toString(),
+      quantity: 1,
+      status: Status.OPEN,
+    } as OrderItem;
+    let orderedItem: any = order.items?.find(i => {
+      return i.itemId === item.itemId && i.orderitems.qualifiers === item.orderitems.qualifiers;
+    });
+    if (orderedItem != undefined) {
+      orderedItem.orderitems.quantity += 1;
+      orderedItem.orderitems.status = Status.OPEN;
+    } else {
+      order.items?.push(item);
+    }
+    order.orderTotal += item.price;
+    this.orderService.order.next(order);
   }
 }

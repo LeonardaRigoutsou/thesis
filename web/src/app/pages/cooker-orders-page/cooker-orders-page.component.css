@@ -1,0 +1,28 @@
+.cooker-page {
+    display: flex;
+    height: 100%;
+}
+
+.ticket-wrapper {
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 5fr);
+    /* grid-gap: 10px; */
+}
+
+.cooker-page-ticket {
+    scale: 85%;
+}
+
+.right-section {
+    width: 35%;
+    margin-left: 25px;
+}
+
+.old-orders {
+    height: 85%;
+}
+
+.alert-button {
+    height: 15%;
+}

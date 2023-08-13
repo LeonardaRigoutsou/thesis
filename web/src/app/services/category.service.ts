@@ -1,8 +1,10 @@
 import { Injectable, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
 export interface Category {
     name: string,
+    qualifierType: string,
     isAvailable: boolean,
     categoryId: number
 }
@@ -13,7 +15,7 @@ export interface Category {
 export class CategoryService {
     categories: Category[] = [];
 
-    constructor() { }
+    constructor(private authService: AuthService) { }
 
     async getCategories(): Promise<Category[]> {
 
@@ -23,7 +25,7 @@ export class CategoryService {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }
             });
 
@@ -45,13 +47,13 @@ export class CategoryService {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
                 },
                 body: JSON.stringify(newCategory)
             });
 
             if (response.status === 200) {
-                await response.json().then(body => this.categories.push(body.category));
+                await response.json().then(body => this.categories.push(body.newCategory));
             } else if (response.status === 500 || response.status === 409) {
                 await response.json().then(body => errorMessage = body.message);
             }
@@ -65,12 +67,12 @@ export class CategoryService {
     async updateCategory(editedCategory: Category, categoryId: number): Promise<string> {
         let errorMessage: string = "";
         try {
-            const response: Response = await fetch('http://localhost:8080/api/reservation/' + categoryId, {
+            const response: Response = await fetch('http://localhost:8080/api/category/' + categoryId, {
                 method: 'PUT',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
                 },
                 body: JSON.stringify(editedCategory)
             });
@@ -79,7 +81,6 @@ export class CategoryService {
                 const index = this.categories.findIndex(reservation => {
                     return reservation.categoryId === editedCategory.categoryId
                 });
-                console.log(index);
                 this.categories.splice(index, 1, editedCategory);
             } else if (response.status === 500 || response.status === 400) {
                 await response.json().then(body => errorMessage = body.message);
@@ -99,7 +100,7 @@ export class CategoryService {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }
             });
 

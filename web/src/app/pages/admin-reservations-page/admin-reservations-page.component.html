@@ -19,16 +19,16 @@
                     <td>{{ reservation.reservationName }}</td>
                     <td>{{ reservation.reservationDate | date: 'short' }}</td>
                     <td>{{ reservation.tableNum }}</td>
-                    <td><button (click)="openEditReservationDialog(reservation)" class="editButton"><img
+                    <td><button (click)="openEditReservationDialog(reservation)" class="edit-button"><img
                                 src="../../../assets/editbutton.png">
                         </button><button (click)="openConfirmationDialog(reservation.reservationId)"
-                            class="deleteButton"><img src="../../../assets/deletebutton.png"></button>
+                            class="delete-button"><img src="../../../assets/deletebutton.png"></button>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <app-icon-button class="home-button" [img]="'../../../assets/homebutton.png'" routerLink="/admin">
-        </app-icon-button>
-        <button class="newReservation" (click)="openNewReservationDialog()">New Reservation</button>
+        <icon-button class="home-button" [img]="'../../../assets/homebutton.png'" routerLink="/admin">
+        </icon-button>
+        <button class="new-reservation" (click)="openNewReservationDialog()">New Reservation</button>
     </div>
 </div>

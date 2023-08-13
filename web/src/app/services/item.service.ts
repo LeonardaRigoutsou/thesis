@@ -1,124 +1,89 @@
-import { Injectable, OnInit } from '@angular/core';
-import { AuthService } from './auth.service';
+import { Injectable } from '@angular/core';
+import { OrderItem } from './order.service';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 
 export interface Item {
     itemId: number,
     title: string,
+    categoryId: number,
     price: number,
     isAvailable: boolean,
-    ingredients: string
+    ingredients: string,
+    orderitems: OrderItem
 }
 
 @Injectable({
     providedIn: 'root'
 })
 export class ItemService {
-    items: Item[] = [];
+    items: BehaviorSubject<Item[]> = new BehaviorSubject<Item[]>([]);
 
-    constructor() { }
+    constructor(private http: HttpClient) { }
 
-    async getItemsByCategoryId(categoryId: number): Promise<Item[]> {
-
-        try {
-            const response: Response = await fetch('http://localhost:8080/api/items/' + categoryId, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
-                }
-            });
-
-            if (response.status === 200) {
-                await response.json().then(body => { this.items = body.items; });
+    getItemsByCategoryId(categoryId: number) {
+        return this.http.get<{ items: Item[] }>('http://localhost:8080/api/items/' + categoryId, {
+            "headers": {
+                "Authorization": 'Bearer ' + localStorage.getItem('token')
             }
-        } catch (err) {
-            console.log(err);
-        }
-
-        return this.items;
+        });
     }
 
-    async createItem(newItem: Item): Promise<string> {
+    createItem(newItem: Item) {
         let errorMessage: string = "";
-        try {
-            const response: Response = await fetch('http://localhost:8080/api/item', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
-                },
-                body: JSON.stringify(newItem)
-            });
 
-            if (response.status === 200) {
-                await response.json().then(body => this.items.push(body.item));
-            } else if (response.status === 500 || response.status === 409) {
-                await response.json().then(body => errorMessage = body.message);
+        this.http.post<{ item: Item }>('http://localhost:8080/api/item', newItem, {
+            "headers": {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        } catch (err) {
-            console.log(err);
-        }
+        }).subscribe({
+            next: (response) => {
+                let updatedItems = this.items.getValue();
+                updatedItems.push(response.item);
+                this.items.next(updatedItems);
+            },
+            error: (error) => {
+                console.log(error);
+                errorMessage = error.message;
+            },
+            complete: () => { }
+        });
 
         return errorMessage;
     }
 
-    async updateItem(editedItem: Item, itemId: number): Promise<string> {
+    updateItem(editedItem: Item, itemId: number) {
         let errorMessage: string = "";
-        try {
-            const response: Response = await fetch('http://localhost:8080/api/item/' + itemId, {
-                method: 'PUT',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
-                },
-                body: JSON.stringify(editedItem)
-            });
 
-            if (response.status === 200) {
-                const index = this.items.findIndex(item => {
-                    return item.itemId === editedItem.itemId
+        this.http.put<{ item: Item }>('http://localhost:8080/api/item/' + itemId, editedItem, {
+            "headers": {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).subscribe({
+            next: (response) => {
+                let editedItems = this.items.getValue();
+
+                const index = editedItems.findIndex(item => {
+                    return item.itemId === response.item.itemId
                 });
-                console.log(index);
-                this.items.splice(index, 1, editedItem);
-            } else if (response.status === 500 || response.status === 400) {
-                await response.json().then(body => errorMessage = body.message);
-            }
+                editedItems.splice(index, 1, editedItem);
+            },
+            error: (error) => {
+                console.log(error);
+                errorMessage = error.message;
+            },
+            complete: () => { }
+        });
 
-        } catch (err) {
-            console.log(err);
-        }
         return errorMessage;
     }
 
-    async deleteItem(itemId: number): Promise<string> {
-        let errorMessage: string = "";
-        try {
-            const response: Response = await fetch('http://localhost:8080/api/item/' + itemId, {
-                method: 'DELETE',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidXNlcklkIjoiMSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3NTQ1NjIyM30.dfAcUoiDSF9_rsDto2lma1tVH0y7MBKO1Xk2jJGUI4s"
-                }
-            });
-
-            if (response.status === 200) {
-                const index = this.items.findIndex(item => {
-                    item.itemId === itemId
-                })
-                this.items.splice(index, 1);
-            } else if (response.status === 500 || response.status === 400 || response.status === 404) {
-                await response.json().then(body => errorMessage = body.message);
+    deleteItem(itemId: number) {
+        return this.http.delete<{ item: Item }>('http://localhost:8080/api/item/' + itemId, {
+            "headers": {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-
-        } catch (err) {
-            console.log(err);
-        }
-        return errorMessage;
-
+        });
     }
 
 }

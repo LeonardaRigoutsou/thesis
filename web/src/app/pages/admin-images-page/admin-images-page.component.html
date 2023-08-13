@@ -1,1 +1,49 @@
-<p>admin-images-page works!</p>
+<div class="admin-images-page">
+    <div class="admin-images">
+        <div class="store-logo">
+            <p>Store logo image for login page</p>
+            <img class="image-preview" src="http://localhost:8080/images/logo.png" alt="">
+        </div>
+        <div class="table-map">
+            <p>Table image for map page</p>
+            <img class="image-preview" src="http://localhost:8080/images/table.png" alt="">
+        </div>
+    </div>
+    <div class="right-sidebar">
+        <form class="store-logo-form">
+            <label>Store Logo Image</label>
+            <br>
+            <label for="logo-upload" class="custom-file-upload">
+                Upload Image
+            </label>
+            <input id="logo-upload" type="file" (change)="selectLogoImage($event)" />
+            <p>{{ selectedLogoFile }}</p>
+            <br>
+            <input class="save-btn" type="submit" value="Save" (click)="uploadImage($event, 'logo')" />
+        </form>
+        <form class="store-logo-form">
+            <label>Table Image</label>
+            <br>
+            <label for="table-upload" class="custom-file-upload">
+                Upload Image
+            </label>
+            <input id="table-upload" type="file" (change)="selectTableImgage($event)" />
+            <p>{{ selectedTableFile }}</p>
+            <br>
+            <input class="save-btn" type="submit" value="Save" (click)="uploadImage($event, 'table')" />
+        </form>
+        <!-- <form class="table-map-form">
+            <label>Table Image</label>
+            <br>
+            <label for="file-upload" class="custom-file-upload">
+                Upload Image
+            </label>
+            <input id="file-upload" type="file" />
+            <br>
+            <input class="save-btn" type="submit" value="Save" (click)="uploadImage($event, 'table')" />
+        </form> -->
+    </div>
+
+    <icon-button class="home-button" [img]="'../../../assets/homebutton.png'" routerLink="/admin">
+    </icon-button>
+</div>

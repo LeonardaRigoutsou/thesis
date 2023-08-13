@@ -1,0 +1,22 @@
+<button class="category-button" (click)="showItemsOfCategory()">
+    {{ category.name }}
+    <div class="button-wrapper">
+        <button (click)="openEditCategoryDialog(category)" class="edit-button"><img
+                src="../../../assets/editbutton.png"></button>
+        <button (click)="openCategoryConfirmationDialog(category.categoryId)" class="delete-button"><img
+                src="../../../assets/deletebutton.png"></button>
+        <img [hidden]="checkIfCategoryEmpty(category.categoryId)" class="expand-arrow" #img
+            src="../../../assets/expandarrow1.png">
+    </div>
+</button>
+
+<div *ngIf="categoryClicked && !checkIfCategoryEmpty(category.categoryId)" class="category-item-list">
+    <button class="category-item" *ngFor="let item of getItems(category.categoryId)">{{ item?.title }}
+        <div class="button-wrapper">
+            <button (click)="openEditItemDialog(item)" class="edit-button"><img
+                    src="../../../assets/editbutton.png"></button>
+            <button (click)="openItemConfirmationDialog(item.itemId)" class="delete-button"><img
+                    src="../../../assets/deletebutton.png"></button>
+        </div>
+    </button>
+</div>

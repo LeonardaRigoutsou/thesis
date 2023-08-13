@@ -1,0 +1,40 @@
+.edit-menu-page {
+    background-color: white;
+    height: 100%;
+    padding: 20px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-menu-wrapper {
+    height: 90%;
+    overflow-y: scroll;
+}
+
+.button-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.home-button {
+    background-color: white;
+}
+
+.new-category-item {
+    border-radius: 5px;
+    background-color: #5B5B5B;
+    color: white;
+    margin: 10px 10px;
+    font-size: large;
+    padding: 10px 40px;
+}
+
+.new-category-item-buttons {
+    position: absolute;
+    bottom: 5%;
+    left: 3%;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 10%;
+}

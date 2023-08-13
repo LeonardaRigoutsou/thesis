@@ -1,0 +1,82 @@
+<button class="item-button" (click)="onItemClicked()">
+    <div class="item-title">{{title}}</div>
+    <div class="expand-arrow"><img *ngIf="!!qualifierType" src="../../../assets/expandarrow1.png"></div>
+</button>
+<div *ngIf="qualifierType && qualifierType === 'coffee' && itemButtonClicked">
+    <div class="qualifier">
+        <div class="qualifier-row">
+            <label class="label-input">Milk:</label>
+            <label class="switch">
+                <input type="checkbox" (click)="onMilkQualifierClicked($event)" [value]="milk">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="qualifier-row sugar-row">
+            <label class="label-input">Sugar:</label>
+            <div class="sugar-button">
+                <input type="radio" name="sugar" (click)="onSugarQualifierClicked('No Sugar')" id="no-sugar" />
+                <label for="no-sugar">NO</label>
+            </div>
+            <div class="sugar-button">
+                <input type="radio" name="sugar" (click)="onSugarQualifierClicked('No-Medium Sugar')" id="no-medium" />
+                <label for="no-medium">N-M</label>
+            </div>
+            <div class="sugar-button">
+                <input type="radio" name="sugar" (click)="onSugarQualifierClicked('Medium Sugar')" id="medium" />
+                <label for="medium">M</label>
+            </div>
+            <div class="sugar-button">
+                <input type="radio" name="sugar" (click)="onSugarQualifierClicked('Medium-Sweet')" id="medium-sweet" />
+                <label for="medium-sweet">M-S</label>
+            </div>
+            <div class="sugar-button">
+                <input type="radio" name="sugar" (click)="onSugarQualifierClicked('Sweet')" id="sweet" />
+                <label for="sweet">S</label>
+            </div>
+        </div>
+        <div class="qualifier-row toppings-row">
+            <label class="label-input">Toppings:</label>
+            <div class="toppings-button">
+                <input type="radio" name="topping" (click)="onToppingQualifierClicked('Cinammon')" id="cinammon" />
+                <label for="cinammon">Cinammon</label>
+            </div>
+            <div class="toppings-button">
+                <input type="radio" name="topping" (click)="onToppingQualifierClicked('Chocolate')" id="chocolate" />
+                <label for="chocolate">Chocolate</label>
+            </div>
+        </div>
+        <div class="done-wrapper">
+            <button class="done-button" (click)="onDoneClicked()">DONE</button>
+        </div>
+    </div>
+</div>
+<div *ngIf="qualifierType && qualifierType === 'drink' && itemButtonClicked">
+    <div class="qualifier">
+        <div class="qualifier-row">
+            <label class="label-input">Ice:</label>
+            <label class="switch">
+                <input type="checkbox" (click)="onIceQualifierClicked($event)" [value]="ice">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="qualifier-row sides-row">
+            <label class="label-input">Sides:</label>
+            <div class="sides-button">
+                <input type="radio" name="sides" (click)="onSidesQualifierClicked('No')" id="No" />
+                <label for="No">No</label>
+            </div>
+            <div class="sides-button">
+                <input type="radio" name="sides" (click)="onSidesQualifierClicked('Nuts')" id="Nuts" />
+                <label for="Nuts">Nuts</label>
+            </div>
+            <div class="sides-button">
+                <input type="radio" name="sides" (click)="onSidesQualifierClicked('Chips')" id="Chips" />
+                <label for="Chips">Chips</label>
+            </div>
+        </div>
+        <div class="done-wrapper">
+            <button class="done-button" (click)="onDoneClicked()">DONE</button>
+        </div>
+    </div>
+
+</div>

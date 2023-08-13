@@ -18,16 +18,16 @@
                     <td>{{user.hireDate | date}}</td>
                     <td>{{user.username}}</td>
                     <td>{{user.role}}</td>
-                    <td><button (click)="openEditEmployeeDialog(user)" class="editButton"><img
+                    <td><button (click)="openEditEmployeeDialog(user)" class="edit-button"><img
                                 src="../../../assets/editbutton.png">
-                        </button><button (click)="openConfirmationDialog(user.userId)" class="deleteButton"><img
+                        </button><button (click)="openConfirmationDialog(user.userId)" class="delete-button"><img
                                 src="../../../assets/deletebutton.png"></button>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <app-icon-button class="home-button" [img]="'../../../assets/homebutton.png'" routerLink="/admin">
-        </app-icon-button>
-        <button class="newEmployee" (click)="openNewEmployeeDialog()">New Employee</button>
+        <icon-button class="home-button" [img]="'../../../assets/homebutton.png'" routerLink="/admin">
+        </icon-button>
+        <button class="new-employee" (click)="openNewEmployeeDialog()">New Employee</button>
     </div>
 </div>

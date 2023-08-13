@@ -1,4 +1,6 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Subject, BehaviorSubject } from "rxjs";
 
 export interface Table {
     tableNum: number,
@@ -11,27 +13,73 @@ export interface Table {
     providedIn: 'root'
 })
 export class TableService {
-    tables: Table[] = [];
+    tables: BehaviorSubject<Table[]> = new BehaviorSubject<Table[]>([]);
+    deletedTable: Subject<Table> = new Subject<Table>();
 
-    async getTables(): Promise<Table[]> {
+    constructor(private http: HttpClient) { }
 
-        try {
-            const response: Response = await fetch('http://localhost:8080/api/tables', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
-            });
-
-            if (response.status === 200) {
-                await response.json().then(body => { this.tables = body.tables; });
+    getTables() {
+        return this.http.get<{ tables: Table[] }>('http://localhost:8080/api/tables', {
+            'headers': {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        } catch (err) {
-            console.log(err);
-        }
-
-        return this.tables;
+        });
     }
-}
+
+    createTable(table: Table) {
+        return this.http.post<Table>('http://localhost:8080/api/table', table, {
+            'headers': {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        });
+    }
+
+    updateTable(tableId: number, table: Table) {
+        this.http.put<Table>('http://localhost:8080/api/table/' + tableId, table, {
+            "headers": {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).subscribe({
+            next: (result) => {
+                const updatedTables = this.tables.getValue();
+                let index = updatedTables.findIndex(table => { return table.tableNum === tableId });
+                updatedTables.splice(index, 1, result);
+                this.tables.next(updatedTables);
+            },
+            error: (error) => {
+                console.log(error);
+            },
+            complete: () => {
+
+            }
+        })
+    }
+
+    deleteTable(tableId: number) {
+        this.http.delete<Table>('http://localhost:8080/api/table/' + tableId, {
+            "headers": {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).subscribe({
+            next: (result) => {
+                const updatedTables = this.tables.getValue();
+                let index = updatedTables.findIndex(table => { return table.tableNum === tableId });
+                updatedTables.splice(index, 1);
+                this.tables.next(updatedTables);
+            },
+            error: (error) => {
+                console.log(error);
+            },
+            complete: () => {
+
+            }
+        })
+    }
+
+    closeOrder(tableId: number) {
+        const updatedTables = this.tables.getValue();
+        let index = updatedTables.findIndex(table => { return table.tableNum === tableId });
+        updatedTables.splice(index, 1);
+        this.tables.next(updatedTables);
+    }
+} 

@@ -18,7 +18,7 @@ import { IconButtonComponent } from './components/icon-button/icon-button.compon
 import { UserService } from './services/user.service';
 import { AuthService } from './services/auth.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ServerMapPageComponent } from './pages/server-map-page/server-map-page.component';
 import { ServerOrderPageComponent } from './pages/server-order-page/server-order-page.component';
 import { CookerOrdersPageComponent } from './pages/cooker-orders-page/cooker-orders-page.component';
@@ -26,12 +26,20 @@ import { OrderMenuComponent } from './components/order-menu/order-menu.component
 import { OrderCategoryButtonComponent } from './components/order-category-button/order-category-button.component';
 import { TicketComponent } from './components/ticket/ticket.component';
 import { AdminReservationFormComponent } from './components/admin-reservation-form/admin-reservation-form.component';
-import { AdminMenuListComponent } from './components/admin-menu-list/admin-menu-list.component';
 import { AdminCategoryFormComponent } from './components/admin-category-form/admin-category-form.component';
 import { AdminItemFormComponent } from './components/admin-item-form/admin-item-form.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { ItemButtonComponent } from './components/item-button/item-button.component';
 import { CategoryButtonComponent } from './components/category-button/category-button.component';
+import { OrderService } from './services/order.service';
+import { ReservationService } from './services/reservation.service';
+import { TableService } from './services/table.service';
+import { CategoryService } from './services/category.service';
+import { TableButtonComponent } from './components/table-button/table-button.component';
+import { ImageService } from './services/image.service';
+import { DragableIconComponent } from './components/dragable-icon/dragable-icon.component';
+import { InsertionPointDirective } from './directives/insertion-point.directive';
+import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -72,23 +80,33 @@ const appRoutes: Routes = [
     OrderCategoryButtonComponent,
     TicketComponent,
     AdminReservationFormComponent,
-    AdminMenuListComponent,
     AdminCategoryFormComponent,
     AdminItemFormComponent,
     ItemButtonComponent,
-    CategoryButtonComponent
+    CategoryButtonComponent,
+    TableButtonComponent,
+    InsertionPointDirective
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
     ReactiveFormsModule,
-    MatDialogModule
+    MatDialogModule,
+    DragableIconComponent,
+    CdkDropList,
+    CdkDrag
   ],
   providers: [
     UserService,
     AuthService,
-    MatDialog
+    CategoryService,
+    OrderService,
+    ReservationService,
+    TableService,
+    ImageService,
+    MatDialog,
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true, disableClose: false, autoFocus: true } }
   ],
   bootstrap: [AppComponent]
 })

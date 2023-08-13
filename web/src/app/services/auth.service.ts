@@ -1,14 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import jwt_decode from 'jwt-decode';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+
+interface JwtPayload {
+  username: string,
+  role: string,
+  userId: number
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  token: string = '';
-  userId: string = '';
-
-  constructor() { }
+  constructor(private router: Router) { }
 
   async login(username: string, password: string): Promise<string> {
     let errorMessage: string = "";
@@ -29,8 +35,28 @@ export class AuthService {
         await response.json().then(body => { errorMessage = body?.message });
       } else if (response.status === 200) {
         await response.json().then(body => {
-          this.token = body.token;
-          this.userId = body.userId;
+          const jwt = jwt_decode<JwtPayload>(body.token);
+          localStorage.setItem('username', jwt.username);
+          localStorage.setItem('userId', body.userId);
+          localStorage.setItem('role', jwt.role);
+
+          if (!jwt.role) {
+            return;
+          }
+
+          localStorage.setItem('token', body.token);
+
+          if (jwt.role === 'admin') {
+            this.router.navigate(['/admin']);
+          }
+
+          if (jwt.role === 'server') {
+            this.router.navigate(['/server/map']);
+          }
+
+          if (jwt.role === 'cooker') {
+            this.router.navigate(['/cooker/orders']);
+          }
         });
       }
     } catch (err) {
@@ -38,5 +64,10 @@ export class AuthService {
     }
 
     return errorMessage;
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
 }

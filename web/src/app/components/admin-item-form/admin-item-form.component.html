@@ -1,0 +1,39 @@
+<div class="newItemModal">
+    <form [formGroup]="newItemForm" class="new-item-form" ngModelGroup="itemData">
+        <div mat-dialog-content>
+            <h1 mat-dialog-title class="new-item-title-dialog">
+                {{this.data.editMode ? 'Edit Item' : 'New Item'}}
+            </h1>
+            <table>
+                <tr>
+                    <td><label class="field-label">Item Name:</label></td>
+                    <td><input class="field-input" formControlName="itemName" type="text"></td>
+                </tr>
+                <tr>
+                    <td><label class="field-label" for="">Category:</label></td>
+                    <td><select class="field-input" formControlName="categoryId" name="categoryId" id="categoryId">
+                            <option *ngFor="let category of categoryService.categories" [value]="category.categoryId">
+                                {{category.name}}
+                            </option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <td><label class="field-label">Price: (cents)</label></td>
+                    <td><input class="field-input" formControlName="price" type="number"></td>
+                </tr>
+                <tr>
+                    <td><label class="field-label">Ingredients:</label></td>
+                    <td><input class="field-input" formControlName="ingredients" type="text"></td>
+                </tr>
+                <tr>
+                    <td><label class="field-label">Is Available:</label></td>
+                    <td><input class="field-input" formControlName="isAvailable" type="checkbox"></td>
+                </tr>
+                <tr>
+                    <button class="submit-button" *ngIf="this.data.editMode" (click)="onUpdate()">Update</button>
+                    <button class="submit-button" *ngIf="!this.data.editMode" (click)="onCreate()">Create</button>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>

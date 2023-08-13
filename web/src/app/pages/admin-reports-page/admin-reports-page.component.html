@@ -1,1 +1,32 @@
-<p>admin-reports-page works!</p>
+<div class="reports">
+    <div class="reports-date">
+        <label class="date-label">Date:</label>
+        <button (click)="previousDate()" class="date-arrow-left"><img src="../../../assets/dateArrow.png"></button>
+        <label class="date-format">{{ currentDate | date }}</label>
+        <button (click)="nextDate()" class="date-arrow-right"><img src="../../../assets/dateArrow.png"></button>
+    </div>
+    <div class="reports-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Order #ID</th>
+                    <th>Price</th>
+                    <th>Time Created</th>
+                    <th>Server Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="report-element" *ngFor="let order of filteredOrders" (click)="displayOrder(order)">
+                    <td>{{ order.orderId }}</td>
+                    <td>{{ order.orderTotal }}</td>
+                    <td>{{ order.orderDate| date: 'dd/MM/yy HH:mm' }}</td>
+                    <td>{{ order.username }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <icon-button class="home-button" [img]="'../../../assets/homebutton.png'" routerLink="/admin">
+    </icon-button>
+</div>
+<img class="arrow" src="'../../../assets/reportsArrow.png">
+<ticket class="report-ticket" [mode]="ticketMode" [editMode]="false" [order]="selectedOrder"></ticket>

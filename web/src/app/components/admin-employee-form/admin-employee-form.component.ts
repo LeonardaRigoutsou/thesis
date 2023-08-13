@@ -28,11 +28,13 @@ export class AdminEmployeeFormComponent {
 
     if (this.data.user) {
       const user = this.data.user;
-      this.newEmployeeForm.get('firstName')?.setValue(user.firstName);
-      this.newEmployeeForm.get('lastName')?.setValue(user.lastName);
-      this.newEmployeeForm.get('hireDate')?.setValue(user.hireDate);
-      this.newEmployeeForm.get('username')?.setValue(user.username);
-      this.newEmployeeForm.get('role')?.setValue(user.role);
+      this.newEmployeeForm.patchValue({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        hireDate: user.hireDate,
+        username: user.username,
+        role: user.role
+      });
     }
   }
 

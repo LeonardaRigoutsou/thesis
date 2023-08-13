@@ -1,0 +1,201 @@
+.item-button {
+    height: 50px;
+    width: 630px;
+    margin-bottom: 15px;
+    text-align: start;
+    border: none;
+    background-color: #b1b1b1;
+    padding: 15px;
+    font-weight: bold;
+    display: flex;
+}
+
+.item-title {
+    width: 95%;
+}
+
+.expand-arrow {
+    width: 5%;
+}
+
+.qualifier {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 230px;
+    width: 600px;
+    background-color: #b1b1b1;
+    margin: 20px;
+    margin-top: 5px;
+}
+
+.label-input {
+    padding: 15px;
+    font-weight: bold;
+}
+
+.switch input {
+    display: none;
+}
+
+.switch {
+    display: inline-block;
+    width: 40px;
+    /*=w*/
+    height: 20px;
+    /*=h*/
+    margin: 4px;
+    transform: translateY(50%);
+    position: relative;
+}
+
+.slider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 30px;
+    box-shadow: 0 0 0 2px #333, 0 0 4px #333;
+    cursor: pointer;
+    border: 4px solid transparent;
+    overflow: hidden;
+    transition: 0.2s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-color: #777;
+    border-radius: 30px;
+    transform: translateX(-20px);
+    /*translateX(-(w-h))*/
+    transition: 0.2s;
+}
+
+input:checked+.slider:before {
+    transform: translateX(20px);
+    /*translateX(w-h)*/
+    background-color: #333;
+}
+
+input:checked+.slider {
+    box-shadow: 0 0 0 2px #333, 0 0 8px #5b5b5b;
+}
+
+.qualifier-row {
+    margin-bottom: 5px;
+}
+
+.sugar-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sides-row {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 35%;
+}
+
+.toppings-row {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 70%;
+}
+
+.sugar-button {
+    margin-top: 10px;
+    margin-right: 15px;
+}
+
+.sides-button {
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+.sugar-button input {
+    display: none;
+}
+
+.sides-button input {
+    display: none;
+}
+
+.sugar-button label {
+    background-color: #5b5b5b;
+    border: 1px solid #888;
+    color: white;
+    width: 70px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    align-self: center;
+    text-align: center;
+}
+
+.sides-button label {
+    background-color: #5b5b5b;
+    border: 1px solid #888;
+    color: white;
+    width: 70px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    align-self: center;
+    text-align: center;
+}
+
+.sugar-button label:active {
+    background-color: #888;
+}
+
+.sides-button label:active {
+    background-color: #888;
+}
+
+.sugar-button input:focus+label {
+    background-color: #333;
+}
+
+.sides-button input:focus+label {
+    background-color: #333;
+}
+
+.toppings-button {
+    margin-top: 10px;
+}
+
+.toppings-button input {
+    display: none;
+
+}
+
+.toppings-button label {
+    background-color: #5b5b5b;
+    margin-left: 20px;
+    color: white;
+    width: 100px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 12%;
+
+}
+
+.done-wrapper {
+    bottom: 5px;
+    left: 80%;
+    width: fit-content;
+}
+
+.done-button {
+    background-color: #5b5b5b;
+    color: white;
+    font-weight: bolder;
+    width: 100px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    position: relative;
+    bottom: 10px;
+    left: 480%;
+}

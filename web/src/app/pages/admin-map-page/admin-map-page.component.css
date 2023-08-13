@@ -1,0 +1,46 @@
+.admin-map-page {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.right-sidebar {
+    width: 18%;
+}
+
+.help-text {
+    margin-top: 30px;
+    height: 10%;
+    background-color: #5B5B5B;
+    color: white;
+    font-size: medium;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.insertion-point {
+    /* position: fixed; */
+    /* top: 40%; */
+    /* left: 85%; */
+}
+
+.table-button {
+    margin-top: 30%;
+    margin-left: 40%;
+}
+
+.table-icon {
+    position: fixed;
+    background-color: #5b5b5b;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    top: 30%;
+    left: 84%;
+}
+
+.drop-area {
+    background-color: lightgray;
+    margin: 10px;
+}

@@ -1,0 +1,90 @@
+.reports {
+    background-color: white;
+    height: 100%;
+    width: 50%;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.reports-wrapper {
+    height: 90%;
+    overflow-y: scroll;
+}
+
+.report-element {
+    border-bottom: 1px solid #5b5b5b;
+    vertical-align: top;
+    height: 10px !important;
+}
+
+.report-element tr:hover {
+    background-color: #E5E5E5;
+}
+
+.date-label {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.date-arrow-left {
+    border: none;
+    background-color: white;
+    transform: rotate(90deg);
+    margin-left: 50px;
+}
+
+.date-arrow-right {
+    border: none;
+    background-color: white;
+    transform: rotate(-90deg);
+    margin-left: 50px;
+}
+
+.date-format {
+    font-size: x-large;
+    margin-left: 50px;
+}
+
+table {
+    margin-top: 50px;
+    width: 100%;
+    height: 90%;
+}
+
+th {
+    font-size: large;
+    font-weight: bolder;
+    vertical-align: top;
+    padding-left: 40px;
+}
+
+td {
+    height: 20px;
+    padding: 20px;
+    padding-left: 40px;
+    text-align: left;
+    font-size: large;
+}
+
+tr {
+    border-bottom: 1px solid #5b5b5b;
+    vertical-align: top;
+    height: 10px;
+}
+
+tr:hover {
+    background-color: #E5E5E5;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.report-ticket {
+    position: absolute;
+    top: 20%;
+    left: 60%;
+    scale: 120%;
+}

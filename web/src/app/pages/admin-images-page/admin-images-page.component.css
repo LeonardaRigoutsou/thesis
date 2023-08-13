@@ -1,0 +1,73 @@
+.admin-images-page {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.admin-images {
+    background-color: white;
+    width: 80%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px;
+    font-size: x-large;
+    color: #5b5b5b
+}
+
+.store-logo {
+    margin-top: 10%;
+    margin-left: 10%;
+}
+
+.table-map {
+    margin: 10%;
+
+}
+
+.right-sidebar {
+    width: 18%;
+    font-size: medium;
+}
+
+.image-preview {
+    width: 50%;
+    height: 25%;
+}
+
+.store-logo-form {
+    margin-top: 10%;
+    font-size: x-large;
+}
+
+.table-map-form {
+    margin-top: 20%;
+    font-size: x-large;
+}
+
+.save-btn {
+    border-radius: 5px;
+    background-color: #5B5B5B;
+    color: white;
+    margin-top: 30px;
+    font-size: small;
+    padding: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    background-color: #5B5B5B;
+    color: white;
+    padding: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+    border-radius: 2px;
+    display: inline-block;
+    font-size: small;
+    cursor: pointer;
+}

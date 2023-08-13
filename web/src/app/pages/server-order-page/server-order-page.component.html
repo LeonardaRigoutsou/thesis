@@ -1,27 +1,33 @@
 <div class="order-menu-page">
     <div class="order-title">
-        <p>Order #125 Table Number: 3</p>
+        <p *ngIf="this.orderService.order.getValue().orderId !== 0">Order #{{ this.orderService.order.getValue().orderId
+            }} Table Number: {{
+            tableNumber }}</p>
+        <p *ngIf="this.orderService.order.getValue().orderId === 0">New Order Table Number: {{ tableNumber }}</p>
     </div>
     <div class="order-menu-components">
         <div class="order-menu-wrapper">
             <order-menu>
-                dfgthyujikl
             </order-menu>
         </div>
         <div class="order-ticket-actions">
-            <ticket [mode]="ticketMode" [order]="newOrder"></ticket>
+            <ticket [order]="order" [editMode]="editMode" [mode]="ticketMode"
+                [showInstructions]="showInstructions.getValue()" [tableNumber]="tableNumber">
+            </ticket>
             <div class="buttons-group">
                 <div class="buttons-group-row">
-                    <button class="order-action-button" (click)="instructionsHandler()">Add instructions</button>
-                    <button class="order-action-button">Cancel order</button>
+                    <button class="order-action-button" (click)="instructionsHandler()">{{ instructionsLabel }}</button>
+                    <button class="order-action-button" (click)="onCancel()">Cancel order</button>
                 </div>
                 <div class="buttons-group-row">
-                    <button class="order-action-button">Close order</button>
-                    <button class="order-action-button">Place order</button>
+                    <button class="order-action-button" (click)="onClose()">Close order</button>
+
+                    <button *ngIf="!editMode" class="order-action-button" (click)="onPlace()">Place order</button>
+                    <button *ngIf="editMode" class="order-action-button" (click)="onUpdate()">Update order</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<app-icon-button class="home-button" [img]="'../../../assets/homebutton.png'" routerLink="/server/map">
-</app-icon-button>
+<icon-button class="home-button" [img]="'../../../assets/homebutton.png'" routerLink="/server/map">
+</icon-button>

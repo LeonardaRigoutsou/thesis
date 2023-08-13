@@ -1,0 +1,12 @@
+<div class="edit-menu-page">
+    <div class="edit-menu-wrapper">
+        <category-button class="button-wrapper" *ngFor="let category of categories" [category]="category">
+        </category-button>
+    </div>
+    <icon-button class="home-button" [img]="'../../../assets/homebutton.png'" routerLink="/admin">
+    </icon-button>
+    <div class="new-category-item-buttons">
+        <button class="new-category-item" (click)="openNewCategoryDialog()">New Category</button>
+        <button class="new-category-item" (click)="openNewItemDialog()">New Item</button>
+    </div>
+</div>

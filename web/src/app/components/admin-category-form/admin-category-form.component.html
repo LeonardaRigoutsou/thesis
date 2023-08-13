@@ -1,0 +1,31 @@
+<div class="newCategoryModal">
+    <form [formGroup]="newCategoryForm" class="new-category-form" ngModelGroup="categoryData">
+        <div mat-dialog-content>
+            <h1 mat-dialog-title class="new-category-title-dialog">
+                {{this.data.editMode ? 'Edit Category' : 'New Category'}}
+            </h1>
+            <table>
+                <tr>
+                    <td><label class="field-label">Category Name:</label></td>
+                    <td><input class="field-input" formControlName="categoryName" type="text"></td>
+                </tr>
+                <tr>
+                    <td><label class="field-label" for="qualifierType">Qualifier Type:</label></td>
+                    <td><select class="field-input" formControlName="qualifierType" name="qualifierType"
+                            id="qualifierType">
+                            <option value="coffee">Coffee</option>
+                            <option value="drink">Drink</option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <td><label class="field-label">Is Available:</label></td>
+                    <td><input class="field-input" formControlName="isAvailable" type="checkbox"></td>
+                </tr>
+                <tr>
+                    <button class="submit-button" *ngIf="this.data.editMode" (click)="onUpdate()">Update</button>
+                    <button class="submit-button" *ngIf="!this.data.editMode" (click)="onCreate()">Create</button>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>

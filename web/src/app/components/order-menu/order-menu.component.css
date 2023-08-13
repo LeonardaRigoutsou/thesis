@@ -1,40 +1,30 @@
 .categories-panel {
+    width: 700px;
+    height: 700px;
+    overflow-y: scroll;
+}
+
+.order-menu {
     background-color: white;
     width: 700px;
     height: 700px;
 }
 
 .items-panel {
-    background-color: white;
     width: 700px;
-    height: 700px;
+    height: 635px;
     display: flex;
     flex-direction: column;
     padding: 30px;
+    overflow-y: scroll;
 }
 
-.itemButton {
-    height: 50px;
-    margin-bottom: 20px;
-    text-align: start;
-    border: none;
-    background-color: #b1b1b1;
-    padding: 15px;
-    font-weight: bold;
-}
-
-.expand-arrow {
-    right: 10px;
-}
-
-.backButton {
+.back-button {
     background-color: white;
     border: none;
-    position: absolute;
-    bottom: 7%;
     left: 3%;
 }
 
-.backButton:hover {
+.back-button:hover {
     transform: scale(0.90);
 }

@@ -10,12 +10,6 @@
                     <td><input class="field-input" formControlName="firstName" type="text"></td>
                 </tr>
                 <tr>
-                    <div class="form-validations"
-                        *ngIf="!newEmployeeForm.get('firstName')?.valid && newEmployeeForm.get('firstName')?.touched">
-                        Please
-                        enter a valid
-                        firstname
-                    </div>
                 </tr>
                 <tr>
                     <td><label class="field-label">Last Name:</label></td>
@@ -47,6 +41,5 @@
                 </tr>
             </table>
         </div>
-        <p class="warnings">tregvyuehru</p>
     </form>
 </div>

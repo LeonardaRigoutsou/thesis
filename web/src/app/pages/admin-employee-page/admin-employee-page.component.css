@@ -42,7 +42,7 @@ tr:hover {
     background-color: #E5E5E5;
 }
 
-.newEmployee {
+.new-employee {
     border-radius: 5px;
     background-color: #5B5B5B;
     color: white;
@@ -56,25 +56,25 @@ tr:hover {
     left: 3%;
 }
 
-.newEmployee:hover {
+.new-employee:hover {
     transform: scale(0.98);
 }
 
-.editButton {
+.edit-button {
     border: none;
     background: none;
 }
 
-.editButton:hover {
+.edit-button:hover {
     transform: scale(0.90);
 }
 
-.deleteButton {
+.delete-button {
     border: none;
     background: none;
 }
 
-.deleteButton:hover {
+.delete-button:hover {
     transform: scale(0.90);
 }
 

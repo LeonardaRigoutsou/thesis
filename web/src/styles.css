@@ -1,7 +1,23 @@
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+
 html,
 body {
     width: 100%;
     height: 100%;
     background-color: #BEBEBE;
     padding: 15px;
+}
+
+.admin-map {
+    background-color: white;
+    width: 80%;
+    padding: 20px;
+    /* margin-right: 10%; */
+    border-radius: 5px;
+    display: flex;
+    /* grid-template-columns: repeat(10, 5fr); */
+}
+
+.mdc-dialog__content {
+    overflow-x: hidden;
 }

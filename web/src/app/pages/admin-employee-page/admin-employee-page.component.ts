@@ -1,5 +1,5 @@
 import { Component, NgModule, OnInit, SchemaMetadata } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdminEmployeeFormComponent } from 'src/app/components/admin-employee-form/admin-employee-form.component';
 import { ConfirmationModalComponent } from 'src/app/components/confirmation-modal/confirmation-modal.component';
 import { User, UserService } from 'src/app/services/user.service';
@@ -22,9 +22,11 @@ export class AdminEmployeePageComponent implements OnInit {
 
   users: User[];
   dialogData: DialogData;
+  confirmDialogRef: MatDialogRef<ConfirmationModalComponent>;
+  employeeDialogRef: MatDialogRef<AdminEmployeeFormComponent>;
 
   constructor(private userService: UserService,
-    public dialog: MatDialog) { }
+    public editDialog: MatDialog, public newDialog: MatDialog, public confirmDialog: MatDialog) { }
 
   ngOnInit() {
     this.loadUsers();
@@ -32,17 +34,15 @@ export class AdminEmployeePageComponent implements OnInit {
 
   loadUsers(): void {
     this.userService.getUsers().then(users => {
-      console.log(users);
       this.users = users;
     });
   }
 
   openConfirmationDialog(userId: number): void {
-    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
-      width: '400px',
-      hasBackdrop: true
+    this.confirmDialogRef = this.confirmDialog.open(ConfirmationModalComponent, {
+      width: '400px'
     });
-    dialogRef.afterClosed().subscribe(result => {
+    this.confirmDialogRef.afterClosed().subscribe(result => {
       if (result.data === 'yes') {
         this.userService.deleteUser(userId);
       }
@@ -50,7 +50,7 @@ export class AdminEmployeePageComponent implements OnInit {
   }
 
   openEditEmployeeDialog(user: User): void {
-    const dialogRef = this.dialog.open(AdminEmployeeFormComponent, {
+    this.employeeDialogRef = this.editDialog.open(AdminEmployeeFormComponent, {
       width: '400px',
       data: {
         editMode: true,
@@ -60,7 +60,7 @@ export class AdminEmployeePageComponent implements OnInit {
   }
 
   openNewEmployeeDialog(): void {
-    const dialogRef = this.dialog.open(AdminEmployeeFormComponent, {
+    this.employeeDialogRef = this.newDialog.open(AdminEmployeeFormComponent, {
       width: '400px',
       data: {
         editMode: false,

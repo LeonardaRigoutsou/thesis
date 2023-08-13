@@ -11,11 +11,11 @@
 .new-employee-form {
     background-color: #BEBEBE;
     position: fixed;
-    top: 25%;
+    top: 20%;
     left: 40%;
     border-radius: 10px;
     width: 25%;
-    height: 55%;
+    height: 60%;
 }
 
 .field-label {
