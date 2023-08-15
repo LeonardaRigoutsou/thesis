@@ -1,6 +1,7 @@
 .icon-button {
     border: none;
     background-color: transparent;
+    position: absolute;
 }
 
 .table-image {

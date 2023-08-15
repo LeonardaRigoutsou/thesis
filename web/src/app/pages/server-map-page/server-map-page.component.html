@@ -1,48 +1,7 @@
 <div class="server-map-page">
-    <div class="server-map-row">
-        <div class="table">
-            <table-button [img]="'http://localhost:8080/images/table.png'" (click)="onTableClick(1)"></table-button>
-        </div>
-        <div class="table">
-            <table-button [img]="'http://localhost:8080/images/table.png'" (click)="onTableClick(2)"></table-button>
-        </div>
-        <div class="table">
-            <table-button [img]="'http://localhost:8080/images/table.png'" (click)="onTableClick(3)"></table-button>
-        </div>
-        <div class="table">
-            <table-button [img]="'http://localhost:8080/images/table.png'" (click)="onTableClick(4)"></table-button>
-        </div>
+    <div class="admin-map">
+        <ng-container #tables></ng-container>
     </div>
-    <div class="server-map-row">
-        <div class="table">
-            <table-button [img]="'http://localhost:8080/images/table.png'" (click)="onTableClick(5)"></table-button>
-        </div>
-        <div class="table">
-            <table-button [img]="'http://localhost:8080/images/table.png'" (click)="onTableClick(6)"></table-button>
-        </div>
-        <div class="table">
-            <table-button [img]="'http://localhost:8080/images/table.png'" (click)="onTableClick(7)"></table-button>
-        </div>
-        <div class="table">
-            <table-button [img]="'http://localhost:8080/images/table.png'" (click)="onTableClick(8)"></table-button>
-        </div>
-    </div>
-    <div class="server-map-row">
-        <div class="table">
-            <table-button [img]="'http://localhost:8080/images/table.png'" (click)="onTableClick(9)"></table-button>
-        </div>
-        <div class="table">
-            <table-button [img]="'http://localhost:8080/images/table.png'" (click)="onTableClick(10)"></table-button>
-        </div>
-        <div class="table">
-            <table-button [img]="'http://localhost:8080/images/table.png'" (click)="onTableClick(11)"></table-button>
-        </div>
-        <div class="table">
-            <table-button [img]="'http://localhost:8080/images/table.png'" (click)="onTableClick(12)"></table-button>
-        </div>
-    </div>
-
-
 
     <icon-button class="logout-button" (click)="onLogout()" [img]="'../../../assets/exit.png'">
     </icon-button>

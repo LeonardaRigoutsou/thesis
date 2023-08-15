@@ -1,3 +1,5 @@
-<button class="icon-button">
-    <img class="table-image" [src]="img" />
+<button class="icon-button" [style]="{'top': table.locationY + 'px', 'left': table.locationX + 'px'}"
+    (click)="onTableClick(table.tableNum)">
+    <img class="table-image" src="http://localhost:8080/images/table.png" />
+    <label>{{ table.tableNum }}</label>
 </button>
