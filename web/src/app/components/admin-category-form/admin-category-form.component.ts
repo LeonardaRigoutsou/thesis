@@ -38,22 +38,19 @@ export class AdminCategoryFormComponent {
 
   onCreate(): void {
     let newCategory = this.formToCategory();
-    this.categoryService.createCategory(newCategory).then(message => {
-      this.errorMessage = message;
-    });
+    this.errorMessage = this.categoryService.createCategory(newCategory);
     this.dialogRef.close();
   }
 
   onUpdate(): void {
     let newCategory = this.formToCategory();
-    this.categoryService.updateCategory(newCategory, this.data.category.categoryId).then(message => {
-      this.errorMessage = message;
-    });
+    this.errorMessage = this.categoryService.updateCategory(this.data.category.categoryId, newCategory);
     this.dialogRef.close();
   }
 
   private formToCategory(): Category {
     let newCategory: Category = {} as Category;
+    newCategory.categoryId = this.data.category?.categoryId;
     newCategory.name = this.newCategoryForm.get('categoryName')?.value;
     newCategory.qualifierType = this.newCategoryForm.get('qualifierType')?.value;
     newCategory.isAvailable = this.newCategoryForm.get('isAvailable')?.value;

@@ -40,13 +40,13 @@ export class AdminItemFormComponent {
   onCreate(): void {
     let newItem = this.formToItem();
     this.errorMessage = this.itemService.createItem(newItem);
-    this.dialogRef.close();
+    this.dialogRef.close(newItem);
   }
 
   onUpdate(): void {
-    let newItem = this.formToItem();
-    this.errorMessage = this.itemService.updateItem(newItem, this.data.item.itemId);
-    this.dialogRef.close();
+    let updatedItem = this.formToItem();
+    this.errorMessage = this.itemService.updateItem(this.data.item.itemId, updatedItem);
+    this.dialogRef.close(updatedItem);
   }
 
   private formToItem(): Item {
@@ -61,9 +61,10 @@ export class AdminItemFormComponent {
   }
 
   getCategoryNameById(categoryId: number): string {
-    let categoryIndex = this.categoryService.categories.findIndex(category => {
+    const updatedCategories = this.categoryService.categories.getValue();
+    let categoryIndex = updatedCategories.findIndex(category => {
       return category.categoryId === categoryId;
-    })
-    return this.categoryService.categories[categoryIndex].name;
+    });
+    return updatedCategories.at(categoryIndex)?.name as string;
   }
 }

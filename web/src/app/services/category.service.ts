@@ -1,6 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { HttpClient } from '@angular/common/http';
 
 export interface Category {
     name: string,
@@ -13,108 +14,97 @@ export interface Category {
     providedIn: 'root'
 })
 export class CategoryService {
-    categories: Category[] = [];
+    categories: BehaviorSubject<Category[]> = new BehaviorSubject<Category[]>([]);
 
-    constructor(private authService: AuthService) { }
+    constructor(private http: HttpClient) { }
 
-    async getCategories(): Promise<Category[]> {
-
-        try {
-            const response: Response = await fetch('http://localhost:8080/api/categories', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
-            });
-
-            if (response.status === 200) {
-                await response.json().then(body => { this.categories = body.categories; });
+    getCategories() {
+        this.http.get<{ categories: Category[] }>('http://localhost:8080/api/categories', {
+            "headers": {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        } catch (err) {
-            console.log(err);
-        }
-
-        return this.categories;
+        }).subscribe({
+            next: (response) => {
+                this.categories.next(response.categories);
+            },
+            error: (error) => {
+                console.log(error);
+            },
+            complete: () => { }
+        });
     }
 
-    async createCategory(newCategory: Category): Promise<string> {
+    createCategory(newCategory: Category) {
         let errorMessage: string = "";
-        try {
-            const response: Response = await fetch('http://localhost:8080/api/category', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                },
-                body: JSON.stringify(newCategory)
-            });
 
-            if (response.status === 200) {
-                await response.json().then(body => this.categories.push(body.newCategory));
-            } else if (response.status === 500 || response.status === 409) {
-                await response.json().then(body => errorMessage = body.message);
+        this.http.post<{ category: Category }>('http://localhost:8080/api/category', newCategory, {
+            "headers": {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        } catch (err) {
-            console.log(err);
-        }
+        }).subscribe({
+            next: (response) => {
+                const updatedCategories = this.categories.getValue();
+                updatedCategories.push(response.category);
+                this.categories.next(updatedCategories);
+            },
+            error: (error) => {
+                console.log(error);
+                errorMessage = error.error.message;
+            },
+            complete: () => { }
+        });
 
         return errorMessage;
     }
 
-    async updateCategory(editedCategory: Category, categoryId: number): Promise<string> {
+    updateCategory(categoryId: number, editedCategory: Category) {
         let errorMessage: string = "";
-        try {
-            const response: Response = await fetch('http://localhost:8080/api/category/' + categoryId, {
-                method: 'PUT',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                },
-                body: JSON.stringify(editedCategory)
-            });
-
-            if (response.status === 200) {
-                const index = this.categories.findIndex(reservation => {
-                    return reservation.categoryId === editedCategory.categoryId
+        console.log(categoryId);
+        this.http.put<{ category: Category }>('http://localhost:8080/api/category/' + categoryId, editedCategory, {
+            "headers": {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).subscribe({
+            next: (response) => {
+                const updatedCategories = this.categories.getValue();
+                const index = updatedCategories.findIndex(category => {
+                    return category.categoryId === editedCategory.categoryId
                 });
-                this.categories.splice(index, 1, editedCategory);
-            } else if (response.status === 500 || response.status === 400) {
-                await response.json().then(body => errorMessage = body.message);
+                updatedCategories.splice(index, 1, editedCategory);
+                this.categories.next(updatedCategories);
+            },
+            error: (error) => {
+                console.log(error);
+                errorMessage = error.error.message;
             }
+        });
 
-        } catch (err) {
-            console.log(err);
-        }
         return errorMessage;
     }
 
-    async deleteCategory(categoryId: number): Promise<string> {
+    async deleteCategory(categoryId: number) {
         let errorMessage: string = "";
-        try {
-            const response: Response = await fetch('http://localhost:8080/api/category/' + categoryId, {
-                method: 'DELETE',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
-            });
 
-            if (response.status === 200) {
-                const index = this.categories.findIndex(category => {
-                    category.categoryId === categoryId
-                })
-                this.categories.splice(index, 1);
-            } else if (response.status === 500 || response.status === 400 || response.status === 404) {
-                await response.json().then(body => errorMessage = body.message);
+        this.http.delete<{ category: Category }>('http://localhost:8080/api/category/' + categoryId, {
+            "headers": {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        } catch (err) {
-            console.log(err);
-        }
+        }).subscribe({
+            next: (response) => {
+                const updatedCategories = this.categories.getValue();
+                const index = updatedCategories.findIndex(category => {
+                    return category.categoryId === categoryId;
+                })
+                updatedCategories.splice(index, 1);
+                this.categories.next(updatedCategories);
+            },
+            error: (error) => {
+                console.log(error);
+                errorMessage = error.error.message;
+            },
+            complete: () => { }
+        });
+
         return errorMessage;
     }
 

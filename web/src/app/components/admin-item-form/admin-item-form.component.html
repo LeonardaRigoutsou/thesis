@@ -12,7 +12,8 @@
                 <tr>
                     <td><label class="field-label" for="">Category:</label></td>
                     <td><select class="field-input" formControlName="categoryId" name="categoryId" id="categoryId">
-                            <option *ngFor="let category of categoryService.categories" [value]="category.categoryId">
+                            <option *ngFor="let category of categoryService.categories | async"
+                                [value]="category.categoryId">
                                 {{category.name}}
                             </option>
                         </select></td>

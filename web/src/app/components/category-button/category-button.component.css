@@ -46,6 +46,15 @@
     justify-content: space-between;
 }
 
+.item-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-ingredients {
+    font-size: 12px;
+}
+
 .category-item:hover {
     background-color: #b1b1b1;
 }

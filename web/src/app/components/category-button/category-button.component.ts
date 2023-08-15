@@ -5,6 +5,7 @@ import { Item, ItemService } from 'src/app/services/item.service';
 import { AdminCategoryFormComponent } from '../admin-category-form/admin-category-form.component';
 import { AdminItemFormComponent } from '../admin-item-form/admin-item-form.component';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'category-button',
@@ -16,7 +17,7 @@ export class CategoryButtonComponent {
   @Input() category: Category;
   @ViewChild('img') image: ElementRef;
   items: Item[] = [];
-  itemsMap: Map<number, Item[]> = new Map<number, Item[]>();
+  itemsMap: BehaviorSubject<Map<number, Item[]>> = new BehaviorSubject<Map<number, Item[]>>(new Map<number, Item[]>());
   categoryClicked: Boolean = false;
 
   constructor(private dialog: MatDialog, private categoryService: CategoryService, private itemService: ItemService, private renderer: Renderer2) { }
@@ -24,8 +25,9 @@ export class CategoryButtonComponent {
   ngOnInit() {
     this.itemService.items.subscribe(items => {
       this.items = items;
+      console.log(this.category);
+      this.loadItems(this.category.categoryId);
     })
-    this.loadItems(this.category.categoryId);
   }
 
   showItemsOfCategory() {
@@ -65,7 +67,7 @@ export class CategoryButtonComponent {
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result.data === 'yes') {
+      if (result?.data === 'yes') {
         this.categoryService.deleteCategory(categoryId);
       }
     });
@@ -77,20 +79,35 @@ export class CategoryButtonComponent {
       disableClose: true
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result.data === 'yes') {
-        this.itemService.deleteItem(itemId);
+      if (result?.data === 'yes') {
+        this.itemService.deleteItem(itemId).subscribe({
+          next: (response) => {
+            const updatedItems = this.items;
+            let index = updatedItems.findIndex(item => {
+              return item.itemId === itemId;
+            });
+            updatedItems.splice(index, 1);
+            this.itemService.items.next(updatedItems);
+          },
+          error: (error) => {
+            console.log(error);
+          },
+          complete: () => { }
+        });;
       }
     });
   }
 
   loadItems(categoryId: number) {
     this.itemService.getItemsByCategoryId(categoryId).subscribe(response => {
-      this.itemsMap.set(categoryId, response.items);
+      const updatedMap = this.itemsMap.getValue();
+      updatedMap.set(categoryId, response.items);
+      this.itemsMap.next(updatedMap);
     });
   }
 
   getItems(categoryId: number) {
-    return this.itemsMap.get(categoryId);
+    return this.itemsMap.getValue().get(categoryId);
   }
 
   checkIfCategoryEmpty(categoryId: number) {

@@ -11,7 +11,12 @@
 </button>
 
 <div *ngIf="categoryClicked && !checkIfCategoryEmpty(category.categoryId)" class="category-item-list">
-    <button class="category-item" *ngFor="let item of getItems(category.categoryId)">{{ item?.title }}
+    <button class="category-item" *ngFor="let item of getItems(category.categoryId)">
+        <div class="item-details">
+            <div class="item-title">{{ item?.title }} - {{ (!!item?.price ? item.price : 0) / 100 | currency : 'EUR' }}
+            </div>
+            <div class="item-ingredients">{{ item?.ingredients }}</div>
+        </div>
         <div class="button-wrapper">
             <button (click)="openEditItemDialog(item)" class="edit-button"><img
                     src="../../../assets/editbutton.png"></button>

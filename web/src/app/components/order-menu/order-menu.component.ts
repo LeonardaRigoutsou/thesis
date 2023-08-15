@@ -20,16 +20,24 @@ export class OrderMenuComponent {
   constructor(private categoryService: CategoryService, private itemService: ItemService, private orderService: OrderService) { }
 
   ngOnInit() {
+    this.categoryService.getCategories();
     this.loadCategories();
   }
 
   loadCategories(): void {
-    this.categoryService.getCategories().then(categories => {
-      this.categories = categories;
-    }).then(() => {
-      this.categories.forEach(category => {
-        this.loadItems(category.categoryId);
-      });
+    this.categoryService.categories.subscribe({
+      next: (categories) => {
+        this.categories = categories;
+        this.categories.forEach(category => {
+          this.loadItems(category.categoryId);
+        });
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {
+
+      }
     });
   }
 

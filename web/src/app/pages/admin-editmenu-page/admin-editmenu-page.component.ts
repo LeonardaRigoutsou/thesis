@@ -6,6 +6,7 @@ import { ConfirmationModalComponent } from 'src/app/components/confirmation-moda
 import { Category, CategoryService } from 'src/app/services/category.service';
 import { Item, ItemService } from 'src/app/services/item.service';
 import { DialogData } from '../admin-employee-page/admin-employee-page.component';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-admin-editmenu-page',
@@ -15,39 +16,47 @@ import { DialogData } from '../admin-employee-page/admin-employee-page.component
 export class AdminEditmenuPageComponent {
   categories: Category[];
   dialogData: DialogData;
-  itemsMap: Map<number, Item[]> = new Map<number, Item[]>();
+  itemsMap: BehaviorSubject<Map<number, Item[]>> = new BehaviorSubject<Map<number, Item[]>>(new Map<number, Item[]>());
   currentItems: Item[] | undefined;
   showCategory: boolean = false;
 
   constructor(private categoryService: CategoryService, private itemService: ItemService, public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.loadCategories();
+    this.categoryService.getCategories();
+    this.categoryService.categories.subscribe({
+      next: (categories) => {
+        this.categories = categories;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {
+        // this.categories.forEach(category => {
+        //   this.loadItems(category.categoryId);
+        // });
+        console.log(this.categories);
+
+      }
+    });
+
   }
 
-  loadCategories(): void {
-    this.categoryService.getCategories().then(categories => {
-      this.categories = categories;
-    }).then(() => {
-      this.categories.forEach(category => {
-        this.loadItems(category.categoryId);
-      });
-    });
-  }
-
-  loadItems(categoryId: number) {
-    this.itemService.getItemsByCategoryId(categoryId).subscribe(response => {
-      this.itemsMap.set(categoryId, response.items);
-    });
-  }
+  // loadItems(categoryId: number) {
+  //   this.itemService.getItemsByCategoryId(categoryId).subscribe(response => {
+  //     const map = new Map<number, Item[]>();
+  //     map.set(categoryId, response.items);
+  //     this.itemsMap.next(map);
+  //   });
+  // }
 
   getItems(categoryId: number) {
-    return this.itemsMap.get(categoryId);
+    return this.itemsMap.getValue().get(categoryId);
   }
 
   categoryButtonHandler(categoryId: number) {
     this.showCategory = true;
-    this.currentItems = this.itemsMap.get(categoryId);
+    this.currentItems = this.itemsMap.getValue().get(categoryId);
   }
 
   openConfirmationDialog(categoryId: number): void {
@@ -77,16 +86,6 @@ export class AdminEditmenuPageComponent {
       data: {
         editMode: false,
         item: null
-      }
-    });
-  }
-
-  openEditCategoryDialog(category: Category): void {
-    const dialogRef = this.dialog.open(AdminCategoryFormComponent, {
-      width: '400px',
-      data: {
-        editMode: true,
-        category: category
       }
     });
   }

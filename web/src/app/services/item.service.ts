@@ -52,7 +52,7 @@ export class ItemService {
         return errorMessage;
     }
 
-    updateItem(editedItem: Item, itemId: number) {
+    updateItem(itemId: number, editedItem: Item) {
         let errorMessage: string = "";
 
         this.http.put<{ item: Item }>('http://localhost:8080/api/item/' + itemId, editedItem, {
@@ -67,6 +67,7 @@ export class ItemService {
                     return item.itemId === response.item.itemId
                 });
                 editedItems.splice(index, 1, editedItem);
+                this.items.next(editedItems);
             },
             error: (error) => {
                 console.log(error);
