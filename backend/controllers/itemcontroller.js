@@ -69,7 +69,7 @@ const createItem = async (req, res, next) => {
             categoryId: categoryId,
             title: title,
             price: price,
-            isAvailable: isAvailable,
+            isAvailable: !!isAvailable ? isAvailable : false,
             ingredients: ingredients
         });
 

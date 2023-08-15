@@ -1,4 +1,4 @@
-<button class="item-button" (click)="onItemClicked()">
+<button class="item-button" *ngIf="isAvailable" (click)="onItemClicked()">
     <div class="item-title">{{title}}</div>
     <div class="expand-arrow"><img *ngIf="!!qualifierType" src="../../../assets/expandarrow1.png"></div>
 </button>

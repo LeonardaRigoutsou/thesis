@@ -21,6 +21,7 @@ interface DrinkQualifier extends Qualifier {
 export class ItemButtonComponent {
   @Input() title: string;
   @Input() qualifierType: any;
+  @Input() isAvailable: boolean;
   itemButtonClicked: boolean = false;
   milk: boolean = true;
   ice: boolean = true;

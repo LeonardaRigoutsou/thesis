@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class OrderCategoryButtonComponent {
   @Input() name: string = '';
+  @Input() isAvailable: boolean;
 }

@@ -1,13 +1,14 @@
 <div class="order-menu">
     <div *ngIf="!showCategory" class="categories-panel">
         <order-category-button *ngFor="let category of categories" [name]="category.name"
+            [isAvailable]="category.isAvailable"
             (click)="categoryButtonHandler(category.categoryId)"></order-category-button>
     </div>
 
     <div *ngIf="showCategory" class="items-panel">
         <item-button class="item-button" *ngFor="let item of currentItems" [title]="item.title"
-            [qualifierType]="getQualifierTypeById(item.categoryId)" (itemClicked)="onItemClicked(item)"
-            (qualifiers)="onAddQualifier($event)"></item-button>
+            [isAvailable]="item.isAvailable" [qualifierType]="getQualifierTypeById(item.categoryId)"
+            (itemClicked)="onItemClicked(item)" (qualifiers)="onAddQualifier($event)"></item-button>
     </div>
     <button class="back-button" *ngIf="showCategory" (click)="goBackHandler()"><img
             src="../../../assets/leftarrow.png"></button>
