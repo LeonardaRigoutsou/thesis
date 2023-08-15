@@ -1,12 +1,14 @@
-const { NUMBER } = require('sequelize');
 const db = require('../util/database');
 
-const getCategories = (req, res, next) => {
-    db.Category.findAll({
-        order: [
-            ['categoryId', 'ASC']
-        ]
-    }).then(categories => {
+const getCategories = async (req, res, next) => {
+
+    try {
+        const categories = await db.Category.findAll({
+            order: [
+                ['categoryId', 'ASC']
+            ]
+        });
+
         if (categories.length === 0) {
             const error = new Error('Category not found.');
             error.statusCode = 404;
@@ -14,9 +16,9 @@ const getCategories = (req, res, next) => {
         }
 
         res.status(200).json({ categories });
-    }).catch(err => {
+    } catch (err) {
         next(err);
-    });
+    };
 };
 
 const createCategory = async (req, res, next) => {
@@ -37,7 +39,7 @@ const createCategory = async (req, res, next) => {
 
         const newCategory = await db.Category.create({
             name: name,
-            isAvailable: isAvailable
+            isAvailable: !!isAvailable ? isAvailable : false,
         });
 
         if (!newCategory) {
@@ -46,61 +48,80 @@ const createCategory = async (req, res, next) => {
             throw error;
         }
 
-        res.status(200).json({ newCategory });
+        res.status(200).json({ category: newCategory });
     } catch (error) {
         return next(error);
     }
 };
 
-const deleteCategory = (req, res, next) => {
+const deleteCategory = async (req, res, next) => {
     const categoryId = req.params.id;
+
     if (!Number.isInteger(+categoryId)) {
         const error = new Error('Category Id is not an integer number.');
         error.statusCode = 400;
         throw error;
     }
-    db.Category.findOne({
-        where: {
-            categoryId: categoryId
-        }
-    }).then(categoryFound => {
-        db.Category.destroy({
+
+    try {
+        const categoryFound = await db.Category.findOne({
             where: {
                 categoryId: categoryId
             }
-        }).then(category => {
-            if (!category) {
-                const error = new Error('Category not found.');
-                error.statusCode = 404;
-                throw error;
-            }
-
-            res.status(200).json(categoryFound);
-        }).catch(err => {
-            next(err);
         });
-    }).catch(err => {
+
+        if (!categoryFound) {
+            const error = new Error('Category not found.');
+            error.statusCode = 404;
+            throw error;
+        }
+
+        const categoryDestroyed = await db.Category.destroy({
+            where: {
+                categoryId: categoryId
+            }
+        });
+
+        if (!categoryDestroyed) {
+            const error = new Error('Could not delete category');
+            error.statusCode = 409;
+            throw error;
+        }
+
+        res.status(200).json({ category: categoryFound });
+    } catch (err) {
         next(err);
-    });
+    };
 };
 
-const updateCategory = (req, res, next) => {
+const updateCategory = async (req, res, next) => {
     const categoryId = req.params.id;
+
     if (!Number.isInteger(+categoryId)) {
         const error = new Error('Category Id is not an integer number');
         error.statusCode = 400;
         throw error;
     }
-    db.Category.update({ ...req.body }, {
-        where: {
-            categoryId: categoryId
-        },
-        returning: true
-    }).then(updatedCategory => {
-        res.status(200).json(updatedCategory);
-    }).catch(err => {
+
+    try {
+
+        const updatedCategory = await db.Category.update({ ...req.body }, {
+            where: {
+                categoryId: categoryId
+            },
+            returning: true
+        });
+
+        if (!updatedCategory) {
+            const error = new Error('Could not update category');
+            error.statusCode = 409;
+            throw error;
+        }
+
+        res.status(200).json({ category: updatedCategory });
+    } catch (err) {
         next(err);
-    });
+    };
 };
 
 
