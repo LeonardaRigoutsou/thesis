@@ -14,6 +14,9 @@
             <li class="ticket-list-item" *ngFor="let item of order?.items" [ngStyle]="getItemStyle(item)">
                 <div class="ticket-item">
                     <b>{{ item?.orderitems?.quantity }}</b> {{item?.title}}
+                    <span class="item-price">
+                        <b>{{ (!!item?.price ? item.price * item.orderitems.quantity / 100 : 0) | number: '1.2-2'}}€</b>
+                    </span>
                     <div class="qualifiers">{{ item?.orderitems?.qualifiers }}</div>
                 </div>
                 <div class="delete-icon">
@@ -37,8 +40,4 @@
             <img src="../../../assets/madebutton.png" />
         </button>
     </div>
-    <!-- <div class="ticket-label" *ngIf="isMode('LABELS')"
-        [ngStyle]="{'color': order?.state === 'MADE' ? 'darkgreen' : (order?.state === 'CANCELLED' ? 'darkred' : 'black')}">
-        {{ order?.state }}
-    </div> -->
 </div>

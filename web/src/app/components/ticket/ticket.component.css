@@ -56,6 +56,10 @@
     margin: 10px;
 }
 
+.item-price {
+    padding-left: 9rem;
+}
+
 .ticket-label {
     position: relative;
     /* left: 55%; */
