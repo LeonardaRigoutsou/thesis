@@ -38,8 +38,10 @@ export class CookerOrdersPageComponent implements OnInit, OnDestroy {
         complete: () => { }
       });
 
-    this.orderService.getOrdersFromSocket().subscribe((orders) => {
-      this.orders.next(orders);
+    this.orderService.getOrderFromSocket().subscribe((order) => {
+      let updatedOrders = this.orders.getValue();
+      updatedOrders.push(order);
+      this.orders.next(updatedOrders);
     })
 
     this.orderService.getOrders();

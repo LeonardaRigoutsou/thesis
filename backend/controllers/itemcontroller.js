@@ -134,7 +134,6 @@ const updateItem = (req, res, next) => {
             error.statusCode = 400;
             throw error;
         }
-        console.log(req.body);
         const updatedItem = db.Item.update({ ...req.body }, {
             where: {
                 itemId: itemId

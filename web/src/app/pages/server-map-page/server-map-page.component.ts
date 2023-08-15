@@ -1,8 +1,7 @@
-import { Component, ViewChild, ViewContainerRef, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { DragableIconComponent } from 'src/app/components/dragable-icon/dragable-icon.component';
+import { Component, ViewChild, ViewContainerRef, OnInit, ComponentRef } from '@angular/core';
 import { TableButtonComponent } from 'src/app/components/table-button/table-button.component';
 import { AuthService } from 'src/app/services/auth.service';
+import { Order, OrderService } from 'src/app/services/order.service';
 import { Table, TableService } from 'src/app/services/table.service';
 
 @Component({
@@ -13,9 +12,11 @@ import { Table, TableService } from 'src/app/services/table.service';
 export class ServerMapPageComponent implements OnInit {
 
   tables: Table[] = [];
+  orders: Order[] = [];
+  tableRefs: ComponentRef<TableButtonComponent>[] = [];
   @ViewChild('tables', { read: ViewContainerRef }) mapContainerRef: ViewContainerRef;
 
-  constructor(private authService: AuthService, private tableService: TableService, private router: Router) { }
+  constructor(private authService: AuthService, private tableService: TableService, private orderService: OrderService) { }
 
   ngOnInit(): void {
     this.tableService.getTables().subscribe({
@@ -29,6 +30,15 @@ export class ServerMapPageComponent implements OnInit {
         this.placeTables();
       }
     });
+    this.orderService.getOrderFromSocket().subscribe(order => {
+      this.tableRefs.forEach(tableRef => {
+        if (order.tableNum === tableRef.instance.table.tableNum) {
+          tableRef.instance.order = order;
+          console.log(order);
+          return;
+        }
+      });
+    });
   }
 
   onLogout() {
@@ -39,6 +49,11 @@ export class ServerMapPageComponent implements OnInit {
     this.tables.forEach(table => {
       let tableRef = this.mapContainerRef.createComponent(TableButtonComponent);
       tableRef.instance.table = table;
+
+      this.orderService.getOrderByTableNum(table.tableNum).subscribe(response => {
+        tableRef.instance.order = response.order;
+      });
+      this.tableRefs.push(tableRef);
     })
   }
 }

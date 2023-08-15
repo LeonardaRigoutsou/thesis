@@ -1,5 +1,8 @@
 <button class="icon-button" [style]="{'top': table.locationY + 'px', 'left': table.locationX + 'px'}"
     (click)="onTableClick(table.tableNum)">
-    <img class="table-image" src="http://localhost:8080/images/table.png" />
-    <label>{{ table.tableNum }}</label>
+    <div class="table-button-content">
+        <img class="table-image" [style]="getTableBorder()" src="http://localhost:8080/images/table.png" />
+        <label>{{ table.tableNum }}</label>
+        <label>{{ order.state }}</label>
+    </div>
 </button>

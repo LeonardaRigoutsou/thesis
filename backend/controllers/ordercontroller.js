@@ -56,11 +56,17 @@ const getOrderById = async (req, res, next) => {
             throw error;
         }
 
-        // const orderitems = await db.OrderItem.findAll({
-        //     where: {
-        //         orderId: order.orderId
-        //     }
-        // });
+        const user = await db.User.findOne({
+            where: {
+                userId: order.serverId
+            }
+        });
+
+        if (!user) {
+            return res.status(409).json({ message: 'Could not find a user for this order' });
+        }
+
+        order.dataValues.username = user.dataValues['username'];
 
         res.status(200).json({ order });
     } catch (error) {
@@ -81,7 +87,6 @@ const getOrderByTableNum = async (req, res, next) => {
             }
         });
 
-        console.log(orders);
         let mostRecentOrderDate = new Date(Math.max.apply(null, orders.map(order => {
             return new Date(order.orderDate);
         })));
@@ -89,8 +94,6 @@ const getOrderByTableNum = async (req, res, next) => {
             var recent = new Date(order.orderDate);
             return recent.getTime() == mostRecentOrderDate.getTime();
         })[0];
-        console.log(recentOrder);
-
 
         if (recentOrder == null || recentOrder.state == 'CLOSED' || recentOrder.state == 'CANCELLED') {
             return res.status(200).json({
@@ -227,9 +230,18 @@ const createOrder = async (req, res, next) => {
             orderedItems.push({ ...fetchedItem.dataValues, orderitems: orderItem });
         }
 
+        const user = await db.User.findOne({
+            where: {
+                userId: serverId
+            }
+        });
 
-        sendMessage('orders', { ...newOrder.dataValues, items: orderedItems });
-        res.status(200).json({ ...newOrder.dataValues, items: orderedItems });
+        if (!user) {
+            return res.status(409).json({ message: 'Could not find a user for this order' });
+        }
+
+        sendMessage('order', { order: { ...newOrder.dataValues, items: orderedItems, username: user.dataValues['username'] } });
+        res.status(200).json({ order: { ...newOrder.dataValues, items: orderedItems, username: user.dataValues['username'] } });
     } catch (error) {
         return next(error);
     }
@@ -361,6 +373,18 @@ const updateOrder = async (req, res, next) => {
             },
             include: db.Item
         });
+
+        const user = await db.User.findOne({
+            where: {
+                userId: serverId
+            }
+        });
+
+        if (!user) {
+            return res.status(409).json({ message: 'Could not find a user for this order' });
+        }
+
+        responseOrder.dataValues.username = user.dataValues['username'];
 
         sendMessage('order', { order: responseOrder.dataValues });
         res.status(200).json({ order: responseOrder.dataValues });

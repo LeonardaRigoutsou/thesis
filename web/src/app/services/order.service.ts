@@ -43,24 +43,18 @@ export interface Order {
     providedIn: 'root'
 })
 export class OrderService {
+    fetchedOrder: BehaviorSubject<Order> = new BehaviorSubject<Order>({} as Order);
     order: BehaviorSubject<Order> = new BehaviorSubject<Order>({} as Order);
     orders: BehaviorSubject<Order[]> = new BehaviorSubject<Order[]>([]);
 
     socket = io('localhost:8080');
 
-    getOrdersFromSocket() {
-        this.socket.on('orders', order => {
-            console.log(order);
-            let updatedOrders = this.orders.getValue();
-            updatedOrders.push(order);
-            this.orders.next(updatedOrders);
+    getOrderFromSocket() {
+        this.socket.on('order', response => {
+            this.fetchedOrder.next(response.order);
         });
 
-        return this.orders.asObservable();
-    }
-
-    updateOrderWithSocket(order: Order) {
-        this.socket.emit('order', order);
+        return this.fetchedOrder.asObservable();
     }
 
     constructor(private http: HttpClient, private tableService: TableService) { }

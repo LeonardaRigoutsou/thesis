@@ -31,8 +31,9 @@
 }
 
 .image-preview {
-    width: 50%;
-    height: 25%;
+    max-width: 300px;
+    max-height: 150px;
+    transform: scale(0.9);
 }
 
 .store-logo-form {

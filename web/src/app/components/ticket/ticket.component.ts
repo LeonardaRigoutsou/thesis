@@ -103,13 +103,13 @@ export class TicketComponent implements OnInit, OnDestroy {
   cancelOrder(event: any) {
     this.order.state = Status.CANCELLED;
     this.orderService.updateOrder(this.order.orderId, this.order);
-    this.orderService.updateOrderWithSocket(this.order);
+    // this.orderService.updateOrderWithSocket(this.order);
   }
 
   makeOrder(event: any) {
     this.order.state = Status.MADE;
     this.orderService.updateOrder(this.order.orderId, this.order);
-    this.orderService.updateOrderWithSocket(this.order);
+    // this.orderService.updateOrderWithSocket(this.order);
   }
 
   onDeleteItem(removedItem: Item) {
