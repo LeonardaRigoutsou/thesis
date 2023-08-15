@@ -463,42 +463,6 @@
                 }
             }
         },
-        "/alert": {
-            "post": {
-                "summary": "Sends an alert",
-                "tags": [
-                    "Ordering"
-                ],
-                "consumes": "application/json",
-                "responses": {
-                    "204": {
-                        "description": "No Content",
-                        "schema": {
-                            "message": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "get": {
-                "summary": "Checks for an alert",
-                "tags": [
-                    "Ordering"
-                ],
-                "consumes": "application/json",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "message": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/users": {
             "get": {
                 "summary": "Returns a list of all users",
