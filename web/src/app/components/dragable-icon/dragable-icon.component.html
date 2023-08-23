@@ -1,5 +1,5 @@
-<div class="table-button" cdkDrag [style]="{'top': table.locationY + 'px', 'left': table.locationX + 'px'}"
-    cdkDragBoundary=".admin-map" (cdkDragReleased)="drop($event)" [cdkDragDisabled]="dropped">
+<div class="table-button" cdkDrag cdkDragBoundary=".admin-map" (cdkDragReleased)="drop($event)"
+    [cdkDragDisabled]="dropped">
     <div class="delete-wrapper">
         <button class="delete-button" (click)="deleteTable()"><img *ngIf="dropped && hasValue && valid"
                 src="../../assets/deletebutton.png"></button>

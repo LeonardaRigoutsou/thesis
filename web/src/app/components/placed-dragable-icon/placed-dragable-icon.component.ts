@@ -6,13 +6,13 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'dragable-icon',
-  templateUrl: './dragable-icon.component.html',
-  styleUrls: ['./dragable-icon.component.css'],
+  selector: 'placed-dragable-icon',
+  templateUrl: './placed-dragable-icon.component.html',
+  styleUrls: ['./placed-dragable-icon.component.css'],
   standalone: true,
   imports: [CdkDrag, CdkDropList, CommonModule]
 })
-export class DragableIconComponent {
+export class PlacedDragableIconComponent {
 
   table: Table;
   tableRef: any;
@@ -64,13 +64,6 @@ export class DragableIconComponent {
         this.valid = true;
       }
     });
-  }
-
-  drop(event: any) {
-    this.dropped = true;
-    const elRect = event.source.element.nativeElement.getBoundingClientRect();
-    this.table.locationX = elRect.left + window.scrollX;
-    this.table.locationY = elRect.top + window.scrollY;
   }
 
 }

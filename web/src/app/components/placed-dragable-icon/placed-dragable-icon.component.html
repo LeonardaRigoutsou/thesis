@@ -1,0 +1,15 @@
+<div class="table-button" [style]="{'top': table.locationY + 'px', 'left': table.locationX + 'px'}">
+    <div class="delete-wrapper">
+        <button class="delete-button" (click)="deleteTable()"><img src="../../assets/deletebutton.png"></button>
+    </div>
+    <div class="item-wrapper">
+        <img src="http://localhost:8080/images/table.png">
+    </div>
+    <div class="item-wrapper">
+        <input (input)="onTableInput($event)" [value]="table.tableNum ? table.tableNum : ''" class="label-field"
+            type="text" maxlength="2">
+    </div>
+    <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+    </div>
+</div>

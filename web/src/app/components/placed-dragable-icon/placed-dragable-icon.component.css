@@ -2,7 +2,6 @@
     position: absolute;
 }
 
-
 .delete-button {
     border: none;
     background: none;
@@ -16,7 +15,6 @@
     display: flex;
     justify-content: flex-end;
 }
-
 
 .item-wrapper {
     display: flex;
