@@ -1481,7 +1481,7 @@
                     "type": "string"
                 },
                 "orderitems": {
-                    "type": "#/definitions/OrderItem"
+                    "$ref": "#definitions/OrderItem"
                 }
             }
         },
