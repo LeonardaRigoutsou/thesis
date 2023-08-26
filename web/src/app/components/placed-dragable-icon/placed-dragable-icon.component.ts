@@ -41,7 +41,7 @@ export class PlacedDragableIconComponent {
   }
 
   deleteTable() {
-    this.tableService.deletedTable.next(this.table);
+    this.onDeleteTable.emit(this.table.tableNum);
   }
 
   saveTable(tableNum: string) {

@@ -14,7 +14,6 @@ export interface Table {
 })
 export class TableService {
     tables: BehaviorSubject<Table[]> = new BehaviorSubject<Table[]>([]);
-    deletedTable: Subject<Table> = new Subject<Table>();
 
     constructor(private http: HttpClient) { }
 

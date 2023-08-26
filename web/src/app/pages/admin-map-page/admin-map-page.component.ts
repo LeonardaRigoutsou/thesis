@@ -21,9 +21,6 @@ export class AdminMapPageComponent implements OnInit {
   constructor(private tableService: TableService) { }
 
   ngOnInit() {
-    this.tableService.deletedTable.subscribe(table => {
-      this.destoyDragableIcon(table.tableNum);
-    });
     this.tableService.getTables().subscribe({
       next: (response) => {
         this.tables = response.tables;
@@ -58,8 +55,8 @@ export class AdminMapPageComponent implements OnInit {
       const toDeleteComponent = this.tableList.at(deleteIndex);
       this.tableList.splice(deleteIndex, 1);
       toDeleteComponent?.destroy();
-    } else {
       this.tableService.deleteTable(deleteNumber);
+      return;
     }
 
     const deletePlacedIndex = this.placedTableList.findIndex(ref => {
