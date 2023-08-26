@@ -1,6 +1,10 @@
 const { Sequelize } = require('sequelize');
+const dotenv = require('dotenv');
 
-const sequelize = new Sequelize('postgres://rykrhuky:5OVYPkBqUxPjTWoWfLa6Kk4pmVgediTi@tyke.db.elephantsql.com/rykrhuky', {
+dotenv.config();
+const DB_HOST = process.env.DB_HOST;
+
+const sequelize = new Sequelize(DB_HOST, {
     pool: {
         max: 5,
         min: 1

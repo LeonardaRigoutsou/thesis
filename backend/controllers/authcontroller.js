@@ -1,8 +1,14 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+
+dotenv.config();
+const SECRET = process.env.SECRET;
 
 const db = require('../util/database');
+
+dotenv.config();
 
 const login = (req, res, next) => {
     const { username, password } = req.body;
@@ -41,7 +47,7 @@ const login = (req, res, next) => {
             userId: loadedUser.userId.toString(),
             role: loadedUser.role
         },
-            'testsecretkey'
+            SECRET
         );
         res.status(200).json({ token: token, userId: loadedUser.userId.toString() });
     }).catch(err => {

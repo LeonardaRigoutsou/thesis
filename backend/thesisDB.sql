@@ -1,8 +1,9 @@
 CREATE TABLE IF NOT EXISTS categories (
 	category_id INT NOT NULL,
 	PRIMARY KEY (category_id),
-	name varchar (20) NOT NULL,
-	is_available boolean NOT NULL
+	name varchar (255) NOT NULL,
+	is_available boolean NOT NULL,
+	qualifier_type varchar (255)
 );
 
 CREATE TABLE IF NOT EXISTS items (
@@ -10,10 +11,10 @@ CREATE TABLE IF NOT EXISTS items (
 	PRIMARY KEY (item_id),
 	category_id INT NOT NULL,
 	FOREIGN KEY (category_id) REFERENCES categories (category_id),
-	title varchar (20) NOT NULL,
+	title varchar (255) NOT NULL,
 	price INT NOT NULL,
 	is_available boolean NOT NULL,
-	ingredients varchar(500)
+	ingredients varchar(255)
 );
 
 CREATE TABLE IF NOT EXISTS tables (
@@ -27,7 +28,7 @@ CREATE TABLE IF NOT EXISTS tables (
 CREATE TABLE IF NOT EXISTS reservations (
 	reservation_id INT NOT NULL,
 	PRIMARY KEY (reservation_id),
-	reservation_name varchar (20) NOT NULL,
+	reservation_name varchar (255) NOT NULL,
 	reservation_date date NOT NULL,
 	table_num INT NOT NULL,
 	FOREIGN KEY (table_num) REFERENCES tables (table_num)
@@ -36,12 +37,12 @@ CREATE TABLE IF NOT EXISTS reservations (
 CREATE TABLE IF NOT EXISTS users (
 	user_id INT NOT NULL, 
 	PRIMARY KEY (user_id),
-	username varchar (20) NOT NULL,
-	password varchar (100) NOT NULL,
-	first_name varchar (20) NOT NULL,
-	last_name varchar (20) NOT NULL,
+	username varchar (255) NOT NULL,
+	password varchar (255) NOT NULL,
+	first_name varchar (255) NOT NULL,
+	last_name varchar (255) NOT NULL,
 	hire_date date NOT NULL,
-	role varchar(20) NOT NULL
+	role varchar(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS orders (
@@ -52,8 +53,9 @@ CREATE TABLE IF NOT EXISTS orders (
 	table_num INT NOT NULL,
 	FOREIGN KEY(table_num) REFERENCES tables (table_num),
 	order_date TIMESTAMP NOT NULL,
-	state varchar(15) NOT NULL,
-	instructions varchar(500)
+	state varchar(255) NOT NULL,
+	instructions varchar(255),
+	order_total INT
 );
 
 CREATE TABLE IF NOT EXISTS orderitems (
@@ -61,7 +63,7 @@ CREATE TABLE IF NOT EXISTS orderitems (
 	FOREIGN KEY (order_id) REFERENCES orders (order_id),
 	item_id INT NOT NULL,
 	FOREIGN KEY (item_id) REFERENCES items (item_id),
-	status varchar (20) NOT NULL,
+	status varchar (255) NOT NULL,
 	quantity int not null,
-	qualifiers varchar(500) 
+	qualifiers varchar(255) 
 );

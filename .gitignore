@@ -1,2 +1,3 @@
 .vscode/launch.json
 web/package-lock.json
+*.png

@@ -1,5 +1,9 @@
 const jwt = require('jsonwebtoken');
 const db = require('../util/database');
+const dotenv = require('dotenv');
+
+dotenv.config();
+const SECRET = process.env.SECRET;
 
 const authenticate = (req, res, next) => {
     const authHeader = req.get('Authorization');
@@ -25,7 +29,7 @@ const authenticate = (req, res, next) => {
 
     let verifiedToken;
     try {
-        verifiedToken = jwt.verify(token, 'testsecretkey');
+        verifiedToken = jwt.verify(token, SECRET);
     } catch (err) {
         throw err;
     }
