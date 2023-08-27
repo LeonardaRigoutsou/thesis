@@ -36,8 +36,8 @@ export class AdminReservationFormComponent {
   }
 
   getTables(): void {
-    this.tableService.tables.subscribe(tables =>
-      this.tables = tables
+    this.tableService.getTables().subscribe(response =>
+      this.tables = response.tables
     );
   }
 
