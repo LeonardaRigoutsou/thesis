@@ -56,6 +56,11 @@
     margin: 10px;
 }
 
+.item {
+    display: flex;
+    justify-content: space-between;
+}
+
 .item-price {
     padding-left: 9rem;
 }

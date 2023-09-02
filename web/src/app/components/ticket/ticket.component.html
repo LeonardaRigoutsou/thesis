@@ -13,10 +13,10 @@
         <ul>
             <li class="ticket-list-item" *ngFor="let item of order?.items" [ngStyle]="getItemStyle(item)">
                 <div class="ticket-item">
-                    <b>{{ item?.orderitems?.quantity }}</b> {{item?.title}}
-                    <span class="item-price">
+                    <div class="item">
+                        <div><b>{{ item?.orderitems?.quantity }}</b> {{item?.title}}</div>
                         <b>{{ (!!item?.price ? item.price * item.orderitems.quantity / 100 : 0) | number: '1.2-2'}}€</b>
-                    </span>
+                    </div>
                     <div class="qualifiers">{{ item?.orderitems?.qualifiers }}</div>
                 </div>
                 <div class="delete-icon">
