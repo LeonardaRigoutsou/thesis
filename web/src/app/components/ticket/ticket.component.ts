@@ -1,7 +1,10 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Item } from 'src/app/services/item.service';
-import { Order, TicketMode, Status, OrderService } from 'src/app/services/order.service';
+import { Item } from 'src/app/models/item.model';
+import { Order } from 'src/app/models/order.model';
+import { Status } from 'src/app/models/status.model';
+import { TicketMode } from 'src/app/models/ticket-mode.model';
+import { OrderService } from 'src/app/services/order.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({

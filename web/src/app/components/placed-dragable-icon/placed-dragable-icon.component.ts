@@ -1,9 +1,10 @@
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Table, TableService } from '../../services/table.service';
+import { TableService } from '../../services/table.service';
 import { CommonModule } from '@angular/common';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Table } from 'src/app/models/table.model';
 
 @Component({
   selector: 'placed-dragable-icon',

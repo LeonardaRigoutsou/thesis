@@ -1,8 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Order } from 'src/app/models/order.model';
+import { Status } from 'src/app/models/status.model';
+import { TicketMode } from 'src/app/models/ticket-mode.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { Order, OrderService, Status, TicketMode } from 'src/app/services/order.service';
+import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'cooker-orders-page',

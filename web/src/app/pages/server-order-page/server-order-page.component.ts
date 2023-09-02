@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { Order } from 'src/app/models/order.model';
+import { Status } from 'src/app/models/status.model';
+import { TicketMode } from 'src/app/models/ticket-mode.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { Order, OrderService, Status, TicketMode } from 'src/app/services/order.service';
-import { User, UserService } from 'src/app/services/user.service';
+import { OrderService } from 'src/app/services/order.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'server-order-page',

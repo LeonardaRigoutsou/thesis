@@ -1,11 +1,13 @@
 import { Component, ElementRef, Input, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Category, CategoryService } from 'src/app/services/category.service';
-import { Item, ItemService } from 'src/app/services/item.service';
+import { CategoryService } from 'src/app/services/category.service';
+import { ItemService } from 'src/app/services/item.service';
 import { AdminCategoryFormComponent } from '../admin-category-form/admin-category-form.component';
 import { AdminItemFormComponent } from '../admin-item-form/admin-item-form.component';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import { BehaviorSubject } from 'rxjs';
+import { Category } from 'src/app/models/category.model';
+import { Item } from 'src/app/models/item.model';
 
 @Component({
   selector: 'category-button',

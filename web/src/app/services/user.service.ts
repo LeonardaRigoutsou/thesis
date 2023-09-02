@@ -1,18 +1,8 @@
 import { Injectable, OnInit } from '@angular/core';
 import { AuthService } from './auth.service';
-import { Reservation } from './reservation.service';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
-
-export interface User {
-  userId: number,
-  username: string,
-  firstName: string,
-  lastName: string,
-  hireDate: Date,
-  password: string,
-  role: string
-}
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'

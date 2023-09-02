@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Order, Status } from 'src/app/services/order.service';
-import { Table } from 'src/app/services/table.service';
+import { Order } from 'src/app/models/order.model';
+import { Status } from 'src/app/models/status.model';
+import { Table } from 'src/app/models/table.model';
 
 @Component({
   selector: 'table-button',

@@ -1,9 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Reservation, ReservationService } from 'src/app/services/reservation.service';
-import { Table, TableService } from 'src/app/services/table.service';
+import { ReservationService } from 'src/app/services/reservation.service';
+import { TableService } from 'src/app/services/table.service';
 import { AdminEmployeeFormComponent } from '../admin-employee-form/admin-employee-form.component';
+import { Table } from 'src/app/models/table.model';
+import { Reservation } from 'src/app/models/reservation.model';
 
 @Component({
   selector: 'admin-reservation-form',

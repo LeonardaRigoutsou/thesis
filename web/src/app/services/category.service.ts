@@ -2,13 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { HttpClient } from '@angular/common/http';
-
-export interface Category {
-    name: string,
-    qualifierType: string,
-    isAvailable: boolean,
-    categoryId: number
-}
+import { Category } from '../models/category.model';
 
 @Injectable({
     providedIn: 'root'

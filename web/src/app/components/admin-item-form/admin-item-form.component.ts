@@ -1,8 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Item } from 'src/app/models/item.model';
 import { CategoryService } from 'src/app/services/category.service';
-import { Item, ItemService } from 'src/app/services/item.service';
+import { ItemService } from 'src/app/services/item.service';
 
 @Component({
   selector: 'admin-item-form',

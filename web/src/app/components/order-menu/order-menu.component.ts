@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
-import { Category, CategoryService } from 'src/app/services/category.service';
-import { Item, ItemService } from 'src/app/services/item.service';
-import { OrderItem, OrderService, Status } from 'src/app/services/order.service';
+import { CategoryService } from 'src/app/services/category.service';
+import { ItemService } from 'src/app/services/item.service';
+import { OrderService } from 'src/app/services/order.service';
 import { Qualifier } from '../item-button/item-button.component';
+import { Category } from 'src/app/models/category.model';
+import { Item } from 'src/app/models/item.model';
+import { OrderItem } from 'src/app/models/order-item.model';
+import { Status } from 'src/app/models/status.model';
 
 @Component({
   selector: 'order-menu',

@@ -1,13 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Subject, BehaviorSubject } from "rxjs";
-
-export interface Table {
-    tableNum: number,
-    seats: number,
-    locationX: number,
-    locationY: number
-}
+import { BehaviorSubject } from "rxjs";
+import { Table } from "../models/table.model";
 
 @Injectable({
     providedIn: 'root'

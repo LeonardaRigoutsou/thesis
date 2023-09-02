@@ -1,8 +1,10 @@
 import { Component, ViewChild, ViewContainerRef, OnInit, ComponentRef } from '@angular/core';
 import { TableButtonComponent } from 'src/app/components/table-button/table-button.component';
+import { Order } from 'src/app/models/order.model';
+import { Table } from 'src/app/models/table.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { Order, OrderService } from 'src/app/services/order.service';
-import { Table, TableService } from 'src/app/services/table.service';
+import { OrderService } from 'src/app/services/order.service';
+import { TableService } from 'src/app/services/table.service';
 
 @Component({
   selector: 'app-server-map-page',

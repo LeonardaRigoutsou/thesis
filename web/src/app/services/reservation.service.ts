@@ -1,13 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-
-export interface Reservation {
-    tableNum: number,
-    reservationName: string,
-    reservationDate: Date
-    reservationId: number
-}
+import { Reservation } from '../models/reservation.model';
 
 @Injectable({
     providedIn: 'root'

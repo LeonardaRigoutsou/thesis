@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { Order, OrderService, Status, TicketMode } from 'src/app/services/order.service';
+import { Order } from 'src/app/models/order.model';
+import { Status } from 'src/app/models/status.model';
+import { TicketMode } from 'src/app/models/ticket-mode.model';
+import { OrderService } from 'src/app/services/order.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({

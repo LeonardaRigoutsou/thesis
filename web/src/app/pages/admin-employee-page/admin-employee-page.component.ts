@@ -1,8 +1,9 @@
-import { Component, NgModule, OnInit, SchemaMetadata } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdminEmployeeFormComponent } from 'src/app/components/admin-employee-form/admin-employee-form.component';
 import { ConfirmationModalComponent } from 'src/app/components/confirmation-modal/confirmation-modal.component';
-import { User, UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user.model';
+import { UserService } from 'src/app/services/user.service';
 
 export interface DialogData {
   firstName: string,

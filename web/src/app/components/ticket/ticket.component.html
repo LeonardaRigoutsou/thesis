@@ -26,8 +26,8 @@
             </li>
         </ul>
     </div>
-    <textarea type="text" class="ticket-instructions" *ngIf="showInstructions" maxlength="150" [disabled]="!editMode"
-        placeholder="Instructions:"></textarea>
+    <textarea type="text" class="ticket-instructions" *ngIf="showInstructions" maxlength="150"
+        [disabled]="(!editMode && !isMode('TOTAL'))" placeholder="Instructions:"></textarea>
     <div class="ticket-instructions-empty" *ngIf="!(showInstructions)"></div>
     <div class="ticket-total" *ngIf="isMode('TOTAL')">
         Total: {{ (!!order ? order.orderTotal / 100 : 0) | number: '1.2-2'}} €

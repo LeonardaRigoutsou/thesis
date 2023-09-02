@@ -1,43 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Item } from './item.service';
 import { TableService } from './table.service';
 import { io } from 'socket.io-client';
+import { Order } from '../models/order.model';
+import { Status } from '../models/status.model';
 
-export enum TicketMode {
-    TOTAL = 'TOTAL',
-    BUTTONS = 'BUTTONS',
-    LABELS = 'LABELS'
-}
-
-export enum Status {
-    NEW = 'NEW',
-    OPEN = 'OPEN',
-    CANCELLED = 'CANCELLED',
-    MADE = 'MADE',
-    CLOSED = 'CLOSED'
-}
-
-export interface OrderItem {
-    status: Status,
-    quantity: number,
-    qualifiers: string,
-    orderId: number,
-    itemId: number
-}
-
-export interface Order {
-    orderId: number;
-    serverId: number,
-    tableNum: number,
-    orderDate: string,
-    orderTotal: number,
-    state: Status,
-    instructions: string,
-    items: Item[],
-    username: string
-}
 
 @Injectable({
     providedIn: 'root'

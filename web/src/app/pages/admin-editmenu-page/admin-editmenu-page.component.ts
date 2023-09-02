@@ -3,10 +3,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { AdminCategoryFormComponent } from 'src/app/components/admin-category-form/admin-category-form.component';
 import { AdminItemFormComponent } from 'src/app/components/admin-item-form/admin-item-form.component';
 import { ConfirmationModalComponent } from 'src/app/components/confirmation-modal/confirmation-modal.component';
-import { Category, CategoryService } from 'src/app/services/category.service';
-import { Item, ItemService } from 'src/app/services/item.service';
+import { CategoryService } from 'src/app/services/category.service';
+import { ItemService } from 'src/app/services/item.service';
 import { DialogData } from '../admin-employee-page/admin-employee-page.component';
 import { BehaviorSubject } from 'rxjs';
+import { Category } from 'src/app/models/category.model';
+import { Item } from 'src/app/models/item.model';
 
 @Component({
   selector: 'app-admin-editmenu-page',

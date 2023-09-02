@@ -1,8 +1,9 @@
-import { Component, ComponentFactoryResolver, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminReservationFormComponent } from 'src/app/components/admin-reservation-form/admin-reservation-form.component';
 import { ConfirmationModalComponent } from 'src/app/components/confirmation-modal/confirmation-modal.component';
-import { Reservation, ReservationService } from 'src/app/services/reservation.service';
+import { Reservation } from 'src/app/models/reservation.model';
+import { ReservationService } from 'src/app/services/reservation.service';
 
 export interface DialogData {
   reservationId: number,

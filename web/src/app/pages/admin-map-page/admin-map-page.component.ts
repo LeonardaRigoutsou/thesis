@@ -1,8 +1,9 @@
 import { Component, ViewContainerRef, ViewChild, OnInit, ComponentRef } from '@angular/core';
 import { InsertionPointDirective } from 'src/app/directives/insertion-point.directive';
 import { DragableIconComponent } from 'src/app/components/dragable-icon/dragable-icon.component';
-import { Table, TableService } from 'src/app/services/table.service';
+import { TableService } from 'src/app/services/table.service';
 import { PlacedDragableIconComponent } from 'src/app/components/placed-dragable-icon/placed-dragable-icon.component';
+import { Table } from 'src/app/models/table.model';
 
 @Component({
   selector: 'app-admin-map-page',

@@ -1,8 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Category } from 'src/app/models/category.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { Category, CategoryService } from 'src/app/services/category.service';
+import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
   selector: 'admin-category-form',
