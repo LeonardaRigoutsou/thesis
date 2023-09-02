@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminReservationFormComponent } from 'src/app/components/admin-reservation-form/admin-reservation-form.component';
 import { ConfirmationModalComponent } from 'src/app/components/confirmation-modal/confirmation-modal.component';
@@ -18,18 +18,21 @@ export interface DialogData {
   templateUrl: './admin-reservations-page.component.html',
   styleUrls: ['./admin-reservations-page.component.css']
 })
-export class AdminReservationsPageComponent {
+export class AdminReservationsPageComponent implements OnInit {
   reservations: Reservation[];
   filteredReservations: Reservation[];
   dialogData: DialogData;
   currentDate: Date;
+  printedDate: string;
+  @ViewChild('date') dateRef: ElementRef;
 
   constructor(private reservationService: ReservationService,
     public dialog: MatDialog) {
   }
 
   ngOnInit() {
-    this.currentDate = new Date();
+    this.currentDate = new Date(Date.now());
+    this.printedDate = this.formatDate(new Date());
     this.reservationService.getReservations();
     this.reservationService.reservations.subscribe({
       next: (reservations) => {
@@ -47,6 +50,7 @@ export class AdminReservationsPageComponent {
     let prevDate: Date = new Date(this.currentDate.getTime());
     prevDate.setDate(this.currentDate.getDate() - 1);
     this.currentDate = prevDate;
+    this.printedDate = this.formatDate(this.currentDate);
     this.filterReservations();
   }
 
@@ -54,6 +58,12 @@ export class AdminReservationsPageComponent {
     let nextDate: Date = new Date(this.currentDate.getTime());
     nextDate.setDate(this.currentDate.getDate() + 1);
     this.currentDate = nextDate;
+    this.printedDate = this.formatDate(this.currentDate);
+    this.filterReservations();
+  }
+
+  changeDate(event: any) {
+    this.currentDate = new Date(event.target.value);
     this.filterReservations();
   }
 
@@ -115,6 +125,10 @@ export class AdminReservationsPageComponent {
     dialogRef.afterClosed().subscribe(result => {
       this.filterReservations();
     })
+  }
+
+  formatDate(date: Date) {
+    return date.toISOString().substring(0, 10);
   }
 
 }

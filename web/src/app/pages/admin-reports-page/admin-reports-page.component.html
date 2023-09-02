@@ -2,7 +2,7 @@
     <div class="reports-date">
         <label class="date-label">Date:</label>
         <button (click)="previousDate()" class="date-arrow-left"><img src="../../../assets/dateArrow.png"></button>
-        <label class="date-format">{{ currentDate | date }}</label>
+        <input #date type="date" [value]="printedDate" (change)="changeDate($event)" />
         <button (click)="nextDate()" class="date-arrow-right"><img src="../../../assets/dateArrow.png"></button>
     </div>
     <div class="reports-wrapper">
