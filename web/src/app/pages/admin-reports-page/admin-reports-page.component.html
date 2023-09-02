@@ -25,6 +25,9 @@
             </tbody>
         </table>
     </div>
+    <div class="total">
+        <b>Total Day Earnings: {{ (!!totalDayEarnings ? totalDayEarnings / 100 : 0) | number: '1.2-2'}} €</b>
+    </div>
     <icon-button class="home-button" [img]="'../../../assets/homebutton.png'" routerLink="/admin">
     </icon-button>
 </div>

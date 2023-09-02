@@ -16,6 +16,7 @@ export class AdminReportsPageComponent {
   filteredOrders: Order[];
   currentDate: Date;
   printedDate: string;
+  totalDayEarnings: number;
   @ViewChild('date') dateRef: ElementRef;
   ticketMode: TicketMode = TicketMode.TOTAL;
   constructor(private orderService: OrderService, private userService: UserService) {
@@ -30,6 +31,7 @@ export class AdminReportsPageComponent {
       next: (orders) => {
         this.orders = orders;
         this.filterOrders();
+        this.calculateTotalDayEarnings();
       },
       error: (error) => {
         console.log(error);
@@ -68,6 +70,15 @@ export class AdminReportsPageComponent {
     this.filteredOrders = this.orders?.filter((order) => {
       return new Date(order.orderDate).toDateString() === this.currentDate.toDateString() && (order.state === Status.CLOSED || order.state === Status.CANCELLED);
     });
+    this.calculateTotalDayEarnings();
+  }
+
+  calculateTotalDayEarnings(): void {
+    let total = 0;
+    this.filteredOrders.forEach(order => {
+      total += order.orderTotal;
+    });
+    this.totalDayEarnings = total;
   }
 
   formatDate(date: Date) {
