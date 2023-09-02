@@ -31,6 +31,9 @@ export class ServerOrderPageComponent implements OnInit, OnDestroy {
     this.paramsSubscription = this.route.queryParams.subscribe(params => {
       this.tableNumber = params['table'];
     });
+    this.orderService.order.subscribe(order => {
+      this.order = order;
+    });
     this.orderSubscription = this.orderService.getOrderByTableNum(this.tableNumber).subscribe({
       next: (result) => {
         if (result.order.orderId === 0) {
@@ -79,6 +82,7 @@ export class ServerOrderPageComponent implements OnInit, OnDestroy {
 
   onPlace() {
     this.router.navigate(['/server/map']);
+    this.order.state = Status.OPEN;
     this.orderService.createOrder(this.order);
   }
 }

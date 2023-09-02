@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/models/item.model';
 import { Order } from 'src/app/models/order.model';
@@ -25,6 +25,7 @@ export class TicketComponent implements OnInit, OnDestroy {
   label: string;
   server: string;
   role: string;
+  @ViewChild('instructions') instructions: ElementRef;
   orderSubscription: Subscription
 
   constructor(private orderService: OrderService, private userService: UserService) { }
@@ -34,7 +35,7 @@ export class TicketComponent implements OnInit, OnDestroy {
       this.orderSubscription = this.orderService.order.subscribe({
         next: (order) => {
           this.order = order;
-          this.editMode = this.order.state === "OPEN" || this.order.state === "MADE";
+          this.editMode = this.order.state === "NEW" || this.order.state === "OPEN" || this.order.state === "MADE";
         },
         error: (error) => {
           console.log(error);
@@ -55,6 +56,11 @@ export class TicketComponent implements OnInit, OnDestroy {
   isMode(ticketMode: string): boolean {
     this.label = this.mode;
     return this.mode == ticketMode;
+  }
+
+  setInstructions(): void {
+    this.order.instructions = this.instructions.nativeElement.value;
+    this.orderService.order.next(this.order);
   }
 
   getTicketStyle(): any {
